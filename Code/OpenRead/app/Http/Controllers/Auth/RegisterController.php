@@ -4,10 +4,13 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
-use App\Models\User;
+use App\Models\DB\User;
+use App\Models\Requests\Auth\SignUpPostRequest;
+use App\Service\Contracts\IAuthService;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Collection;
 
 class RegisterController extends Controller
 {
@@ -21,6 +24,8 @@ class RegisterController extends Controller
     | provide this functionality without requiring any additional code.
     |
     */
+
+    private $authService;
 
     use RegistersUsers;
 
@@ -36,24 +41,26 @@ class RegisterController extends Controller
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(IAuthService $authService)
     {
+        $this->authService = $authService;
         $this->middleware('guest');
     }
 
     /**
-     * Get a validator for an incoming registration request.
+     * Handle a registration request for the application.
      *
-     * @param  array  $data
-     * @return \Illuminate\Contracts\Validation\Validator
+     * @param  \App\Models\Requests\Auth\SignUpPostRequest  $request
+     * @return \Illuminate\Http\Response
      */
-    protected function validator(array $data)
+    public function register(SignUpPostRequest $request)
     {
-        return Validator::make($data, [
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
-        ]);
+        event(new Registered($peserta = $this->create($request->validatedIntoCollection())));
+
+        $this->guard()->login($peserta);
+
+        return $this->registered($request, $peserta)
+                        ?: redirect($this->redirectPath());
     }
 
     /**
@@ -62,12 +69,8 @@ class RegisterController extends Controller
      * @param  array  $data
      * @return \App\Models\User
      */
-    protected function create(array $data)
+    protected function create(Collection $data)
     {
-        return User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => Hash::make($data['password']),
-        ]);
+        return $this->authService->RegisterUser($data);
     }
 }
