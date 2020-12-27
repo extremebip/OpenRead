@@ -12,6 +12,8 @@ class AppServiceProvider extends ServiceProvider
      * @var array
      */
     private $repositories = [
+        'RatingRepository',
+        'StoryRepository',
         'UserRepository',
     ];
 
@@ -21,7 +23,8 @@ class AppServiceProvider extends ServiceProvider
      * @var array
      */
     private $services = [
-        'AuthService'
+        'AuthService',
+        'UserProfileService',
     ];
     /**
      * Register any application services.

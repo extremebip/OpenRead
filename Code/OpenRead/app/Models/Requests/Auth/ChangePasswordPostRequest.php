@@ -3,6 +3,8 @@
 namespace App\Models\Requests\Auth;
 
 use App\Models\Requests\PostRequest;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class ChangePasswordPostRequest extends PostRequest
 {
