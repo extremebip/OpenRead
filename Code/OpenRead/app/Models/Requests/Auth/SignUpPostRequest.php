@@ -33,6 +33,7 @@ class SignUpPostRequest extends PostRequst
         return [
             'name.required' => 'Name must not be empty',
             'name.max' => 'Name must not have more than :max characters',
+            'name.min' => 'Name must have at least :min characters',
 
             'username.required' => 'Username must not be empty',
             'username.min' => 'Username must have at least :min characters',

@@ -42,4 +42,11 @@ class AuthService implements IAuthService
 
         return $this->userRepository->InsertUpdate($user);
     }
+
+    public function ChangePassword($user_id, $new_password)
+    {
+        $user = $this->userRepository->find($user_id);
+        $user->password = Hash::make($new_password);
+        return $this->userRepository->InsertUpdate($user);
+    }
 }

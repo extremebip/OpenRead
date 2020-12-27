@@ -12,7 +12,7 @@ class AppServiceProvider extends ServiceProvider
      * @var array
      */
     private $repositories = [
-
+        'UserRepository',
     ];
 
     /**
@@ -21,7 +21,7 @@ class AppServiceProvider extends ServiceProvider
      * @var array
      */
     private $services = [
-
+        'AuthService'
     ];
     /**
      * Register any application services.

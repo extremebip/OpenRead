@@ -4,6 +4,7 @@ namespace App\Repository\Repositories;
 
 use App\Models\DB\User;
 use App\Repository\Base\BaseRepository;
+use App\Repository\Contracts\IUserRepository;
 
 class UserRepository extends BaseRepository implements IUserRepository
 {

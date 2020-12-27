@@ -3,6 +3,9 @@
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\Auth\ChangePasswordController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -18,6 +21,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/home', [HomeController::class, 'index'])->name('home');
+
 Auth::routes(['verify' => false]);
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/password/change', [ChangePasswordController::class, 'index']);
+Route::post('/password/change', [ChangePasswordController::class, 'change'])->name('change-password');
