@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title></title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW"
+        crossorigin="anonymous"></script>
+</head>
+
+<body style="background-color: #232327;">
+    <div class="wrapper">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="background-color: #3A3B44;">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse bg-dark justify-content-between" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item px-2">
+                        <a class="nav-link active" aria-current="page" href="#">Home</a>
+                    </li>
+                    <li class="nav-item px-2">
+                        <a class="nav-link" href="#">Write story</a>
+                    </li>
+                    <li class="nav-item dropdown px-2">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">Genre</a>
+                        <ul class="dropdown-menu" style="background-color: #6D6E7D" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item text-white" href="#">Fantasy</a></li>
+                            <li><a class="dropdown-item text-white" href="#">Social</a></li>
+                            <li><a class="dropdown-item text-white" href="#">Romantic</a></li>
+                            <li><a class="dropdown-item text-white" href="#">Horror</a></li>
+                            <li><a class="dropdown-item text-white" href="#">Thriller</a></li>
+                            <li><a class="dropdown-item text-white" href="#">Fanfiction</a></li>
+                            <li><a class="dropdown-item text-white" href="#">Science Fiction</a></li>
+                            <li><a class="dropdown-item text-white" href="#">History</a></li>
+                            <li><a class="dropdown-item text-white" href="#">Non-Fiction</a></li>
+                            <li><a class="dropdown-item text-white" href="#">Adventure</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item px-2">
+                        <form class="d-flex">
+                            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                            <button class="btn btn-outline-success search-btn" type="submit">
+                                <img src="assets/search btn.png" style="width: 16px;" class="img-fluid"
+                                    alt="Responsive image">
+                            </button>
+                        </form>
+                    </li>
+                </ul>
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item px-2">
+                        <a class="nav-link" href="#">Hallo, nama</a>
+                    </li>
+                    <li class="nav-item px-2">
+                        <a class="nav-link" href="#">Logout</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <div class="content text-white">
+            <p class="title">Edit Story</p>
+            <p style="font-size: 36px; text-align: center;">please select the story you want to edit</p>
+            <table class="table table-borderless" style="margin: 80px 0px;">
+                <tr>
+                    <td>
+                        <button class="button-to-edit" >
+                            <div style="display: flex;  margin: 20px 10px;">
+                                <img class="display-cover" src="assets/homepage.png" alt="">
+                                <div>
+                                    <p class="display-title display-content">Judul Story</p>
+                                    <div>
+                                        <img class="rate-view-icon display-content" src="assets/Star.svg.png" alt="">
+                                        <span class="display-content">3.04</span>
+                                        <img class="rate-view-icon display-content" src="assets/view.png" alt="">
+                                        <span class="display-content">1200</span>
+                                    </div>
+                                    <span class="display-content text-break">Lorem, ipsum dolor sit amet consectetur
+                                        adipisicing elit. Eaque similique placeat nobis est deleniti? Ipsum unde officiis
+                                        sed corrupti harum minima sequi quas assumenda odit, similique suscipit accusamus
+                                        veniam sunt.</span>
+                                </div>
+                            </div>
+                        </button>
+                    </td>
+                    <td>
+                        <button class="button-to-edit" >
+                            <div style="display: flex;  margin: 20px 10px;">
+                                <img class="display-cover" src="assets/homepage.png" alt="">
+                                <div>
+                                    <p class="display-title display-content">Judul Story</p>
+                                    <div>
+                                        <img class="rate-view-icon display-content" src="assets/Star.svg.png" alt="">
+                                        <span class="display-content">3.04</span>
+                                        <img class="rate-view-icon display-content" src="assets/view.png" alt="">
+                                        <span class="display-content">1200</span>
+                                    </div>
+                                    <span class="display-content text-break">Lorem, ipsum dolor sit amet consectetur
+                                        adipisicing elit. Eaque similique placeat nobis est deleniti? Ipsum unde officiis
+                                        sed corrupti harum minima sequi quas assumenda odit, similique suscipit accusamus
+                                        veniam sunt.</span>
+                                </div>
+                            </div>
+                        </button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <button class="button-to-edit" >
+                            <div style="display: flex;  margin: 20px 10px;">
+                                <img class="display-cover" src="assets/homepage.png" alt="">
+                                <div>
+                                    <p class="display-title display-content">Judul Story</p>
+                                    <div>
+                                        <img class="rate-view-icon display-content" src="assets/Star.svg.png" alt="">
+                                        <span class="display-content">3.04</span>
+                                        <img class="rate-view-icon display-content" src="assets/view.png" alt="">
+                                        <span class="display-content">1200</span>
+                                    </div>
+                                    <span class="display-content text-break">Lorem, ipsum dolor sit amet consectetur
+                                        adipisicing elit. Eaque similique placeat nobis est deleniti? Ipsum unde officiis
+                                        sed corrupti harum minima sequi quas assumenda odit, similique suscipit accusamus
+                                        veniam sunt.</span>
+                                </div>
+                            </div>
+                        </button>
+                    </td>
+                    <td>
+                        <button class="button-to-edit" >
+                            <div style="display: flex;  margin: 20px 10px;">
+                                <img class="display-cover" src="assets/homepage.png" alt="">
+                                <div>
+                                    <p class="display-title display-content">Judul Story</p>
+                                    <div>
+                                        <img class="rate-view-icon display-content" src="assets/Star.svg.png" alt="">
+                                        <span class="display-content">3.04</span>
+                                        <img class="rate-view-icon display-content" src="assets/view.png" alt="">
+                                        <span class="display-content">1200</span>
+                                    </div>
+                                    <span class="display-content text-break">Lorem, ipsum dolor sit amet consectetur
+                                        adipisicing elit. Eaque similique placeat nobis est deleniti? Ipsum unde officiis
+                                        sed corrupti harum minima sequi quas assumenda odit, similique suscipit accusamus
+                                        veniam sunt.</span>
+                                </div>
+                            </div>
+                        </button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <button class="button-to-edit" >
+                            <div style="display: flex;  margin: 20px 10px;">
+                                <img class="display-cover" src="assets/homepage.png" alt="">
+                                <div>
+                                    <p class="display-title display-content">Judul Story</p>
+                                    <div>
+                                        <img class="rate-view-icon display-content" src="assets/Star.svg.png" alt="">
+                                        <span class="display-content">3.04</span>
+                                        <img class="rate-view-icon display-content" src="assets/view.png" alt="">
+                                        <span class="display-content">1200</span>
+                                    </div>
+                                    <span class="display-content text-break">Lorem, ipsum dolor sit amet consectetur
+                                        adipisicing elit. Eaque similique placeat nobis est deleniti? Ipsum unde officiis
+                                        sed corrupti harum minima sequi quas assumenda odit, similique suscipit accusamus
+                                        veniam sunt.</span>
+                                </div>
+                            </div>
+                        </button>
+                    </td>
+                    <td>
+                        <button class="button-to-edit" >
+                            <div style="display: flex;  margin: 20px 10px;">
+                                <img class="display-cover" src="assets/homepage.png" alt="">
+                                <div>
+                                    <p class="display-title display-content">Judul Story</p>
+                                    <div>
+                                        <img class="rate-view-icon display-content" src="assets/Star.svg.png" alt="">
+                                        <span class="display-content">3.04</span>
+                                        <img class="rate-view-icon display-content" src="assets/view.png" alt="">
+                                        <span class="display-content">1200</span>
+                                    </div>
+                                    <span class="display-content text-break">Lorem, ipsum dolor sit amet consectetur
+                                        adipisicing elit. Eaque similique placeat nobis est deleniti? Ipsum unde officiis
+                                        sed corrupti harum minima sequi quas assumenda odit, similique suscipit accusamus
+                                        veniam sunt.</span>
+                                </div>
+                            </div>
+                        </button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <button class="button-to-edit" >
+                            <div style="display: flex;  margin: 20px 10px;">
+                                <img class="display-cover" src="assets/homepage.png" alt="">
+                                <div>
+                                    <p class="display-title display-content">Judul Story</p>
+                                    <div>
+                                        <img class="rate-view-icon display-content" src="assets/Star.svg.png" alt="">
+                                        <span class="display-content">3.04</span>
+                                        <img class="rate-view-icon display-content" src="assets/view.png" alt="">
+                                        <span class="display-content">1200</span>
+                                    </div>
+                                    <span class="display-content text-break">Lorem, ipsum dolor sit amet consectetur
+                                        adipisicing elit. Eaque similique placeat nobis est deleniti? Ipsum unde officiis
+                                        sed corrupti harum minima sequi quas assumenda odit, similique suscipit accusamus
+                                        veniam sunt.</span>
+                                </div>
+                            </div>
+                        </button>
+                    </td>
+                    <td>
+                        <button class="button-to-edit" >
+                            <div style="display: flex;  margin: 20px 10px;">
+                                <img class="display-cover" src="assets/homepage.png" alt="">
+                                <div>
+                                    <p class="display-title display-content">Judul Story</p>
+                                    <div>
+                                        <img class="rate-view-icon display-content" src="assets/Star.svg.png" alt="">
+                                        <span class="display-content">3.04</span>
+                                        <img class="rate-view-icon display-content" src="assets/view.png" alt="">
+                                        <span class="display-content">1200</span>
+                                    </div>
+                                    <span class="display-content text-break">Lorem, ipsum dolor sit amet consectetur
+                                        adipisicing elit. Eaque similique placeat nobis est deleniti? Ipsum unde officiis
+                                        sed corrupti harum minima sequi quas assumenda odit, similique suscipit accusamus
+                                        veniam sunt.</span>
+                                </div>
+                            </div>
+                        </button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <button class="button-to-edit" >
+                            <div style="display: flex;  margin: 20px 10px;">
+                                <img class="display-cover" src="assets/homepage.png" alt="">
+                                <div>
+                                    <p class="display-title display-content">Judul Story</p>
+                                    <div>
+                                        <img class="rate-view-icon display-content" src="assets/Star.svg.png" alt="">
+                                        <span class="display-content">3.04</span>
+                                        <img class="rate-view-icon display-content" src="assets/view.png" alt="">
+                                        <span class="display-content">1200</span>
+                                    </div>
+                                    <span class="display-content text-break">Lorem, ipsum dolor sit amet consectetur
+                                        adipisicing elit. Eaque similique placeat nobis est deleniti? Ipsum unde officiis
+                                        sed corrupti harum minima sequi quas assumenda odit, similique suscipit accusamus
+                                        veniam sunt.</span>
+                                </div>
+                            </div>
+                        </button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+</body>
+
+<style>
+    .button-to-edit{
+        background-color: #6D6E7D;
+        color: white;
+        border-radius: 28px;
+        margin: 12px;
+    }
+</style>
+
+</html>
