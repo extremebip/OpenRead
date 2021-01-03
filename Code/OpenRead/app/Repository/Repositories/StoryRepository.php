@@ -16,4 +16,44 @@ class StoryRepository extends BaseRepository implements IStoryRepository
     {
         return Story::where('username', '=', $username)->get();
     }
+
+    public function FindAllPaginate($search, $offset, $limit)
+    {
+        return Story::where('story_title', 'like', $search)
+                    ->orWhere('username', 'like', $search)
+                    ->offset($offset)
+                    ->limit($limit)
+                    ->get();
+    }
+
+    public function FindAllWhereAboveViewsAverageOrderBy($order_by = null, $dir = 'asc')
+    {
+        $avg = Story::avg('views');
+        return Story::where('views', '>', $avg)
+                    ->when($order_by, function ($query, $order_by) use($dir)
+                    {
+                        return $query->orderBy($order_by, $dir);
+                    })
+                    ->get();
+    }
+
+    public function FindAllOffsetByLimitByOrderBy($offset, $limit, $order_by = null, $dir = 'asc')
+    {
+        return Story::when($order_by, function ($query, $order_by) use($dir)
+        {
+            return $query->orderBy($order_by, $dir);
+        })
+        ->offset($offset)
+        ->limit($limit)
+        ->get();
+    }
+
+    public function FindAllByIDsLimitByOrderBy($story_ids, $limit, $order_by = 'story_id', $dir = 'asc')
+    {
+        return Story::whereIn('story_id', $story_ids)
+                    ->orderBy($order_by, $dir)
+                    ->offset(0)
+                    ->limit($limit)
+                    ->get();
+    }
 }

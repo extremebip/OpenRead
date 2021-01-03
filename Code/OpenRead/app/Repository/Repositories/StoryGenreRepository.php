@@ -16,4 +16,9 @@ class StoryGenreRepository extends BaseRepository implements IStoryGenreReposito
     {
         return StoryGenre::where('story_id', '=', $story_id)->get();
     }
+    
+    public function FindAllByGenre($genre_id)
+    {
+        return StoryGenre::where('genre_id', '=', $genre_id)->get();
+    }
 }

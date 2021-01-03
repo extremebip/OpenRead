@@ -20,11 +20,9 @@ use App\Http\Controllers\Auth\ChangePasswordController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
-Route::get('/home', [HomeController::class, 'index'])->name('home');
+Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/genre/{genre_id?}', [HomeController::class, 'index'])->name('genre');
+Route::get('/search', [HomeController::class, 'search']);
 
 Auth::routes(['verify' => false]);
 
