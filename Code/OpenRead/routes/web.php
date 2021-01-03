@@ -1,11 +1,12 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\Auth\ChangePasswordController;
+use App\Http\Controllers\User\WriterController;
 use App\Http\Controllers\User\ProfileController;
+use App\Http\Controllers\Auth\ChangePasswordController;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,3 +33,7 @@ Route::post('/password/change', [ChangePasswordController::class, 'change'])->na
 Route::get('/profile', [ProfileController::class, 'index'])->name('show-profile');
 Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('show-edit-profile');
 Route::post('/profile/edit', [ProfileController::class, 'save'])->name('save-edit-profile');
+
+Route::get('/stories/write', [WriterController::class, 'index']);
+Route::get('/stories/create', [WriterController::class, 'create']);
+//Route::get('/stories/edit', [WriterController::class, 'edit']);

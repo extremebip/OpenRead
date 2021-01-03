@@ -47,8 +47,12 @@ class UserProfileService implements IUserProfileService
         $user = $this->userRepository->Find($data['username']);
 
         $user->name = $data['name'];
-        $user->email = $data['email'];
-        $user->gender = $data['gender'];
+        if ($data['change_email']){
+            $user->email = $data['email'];
+        }
+        if ($data['profile_picture'] !== ''){
+            $user->profile_picture = $data['profile_picture'];
+        }
 
         return $userRepository->InsertUpdate($user);
     }

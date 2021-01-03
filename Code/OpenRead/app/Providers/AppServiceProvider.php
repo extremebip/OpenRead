@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Illuminate\Support\Collection;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -12,7 +13,10 @@ class AppServiceProvider extends ServiceProvider
      * @var array
      */
     private $repositories = [
+        'ChapterRepository',
+        'GenreRepository',
         'RatingRepository',
+        'StoryGenreRepository',
         'StoryRepository',
         'UserRepository',
     ];
@@ -25,6 +29,7 @@ class AppServiceProvider extends ServiceProvider
     private $services = [
         'AuthService',
         'UserProfileService',
+        'WriterService',
     ];
     /**
      * Register any application services.
@@ -53,6 +58,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        Collection::macro('toDropdown', function ($value_key, $text_key)
+        {
+            return $this->mapWithKeys(function ($item) use ($value_key, $text_key)
+            {
+                return [$item[$value_key] => $item[$text_key]];
+            });
+        });
     }
 }
