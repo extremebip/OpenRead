@@ -33,7 +33,7 @@ class SaveChapterPostRequest extends PostRequest
     {
         return [
             'chapter_title' => ['required', 'string', 'min:5', 'max:50'],
-            'content' => ['required', 'string', 'max:65535'],
+            'content' => ['required', 'string', 'min:10', 'max:16777214'],
             'story_id' => ['required', 'exists:stories,story_id'],
             'chapter_id' => ['sometimes', 'required', 'exists:stories,story_id']
         ];
@@ -50,6 +50,9 @@ class SaveChapterPostRequest extends PostRequest
             'chapter_title.required' => 'Chapter Title must not be empty',
             'chapter_title.min' => 'Chapter Title must have at least :min characters',
             'chapter_title.max' => 'Chapter Title must not exceed :max characters',
+
+            'content.min' => 'Content must have at least :min characters',
+            'content.max' => 'Content must not exceed :max characters',
 
             'story_id.exists' => 'Story does not exist',
 

@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\User\ReaderController;
 use App\Http\Controllers\User\WriterController;
 use App\Http\Controllers\User\ProfileController;
 use App\Http\Controllers\Auth\ChangePasswordController;
@@ -37,3 +38,7 @@ Route::post('/profile/edit', [ProfileController::class, 'save'])->name('save-edi
 Route::get('/stories/write', [WriterController::class, 'index']);
 Route::get('/stories/create', [WriterController::class, 'create']);
 //Route::get('/stories/edit', [WriterController::class, 'edit']);
+
+Route::get('/stories/{story_id?}', [ReaderController::class, 'index']);
+Route::get('/chapters/{chapter_id?}', [ReaderController::class, 'chapter']);
+Route::post('/comment', [ReaderController::class, 'postComment'])->name('save-comment');

@@ -11,4 +11,9 @@ class StoryGenreRepository extends BaseRepository implements IStoryGenreReposito
     public function __construct() {
         parent::__construct(new StoryGenre());
     }
+
+    public function FindAllByStory($story_id)
+    {
+        return StoryGenre::where('story_id', '=', $story_id)->get();
+    }
 }

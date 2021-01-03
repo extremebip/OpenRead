@@ -96,6 +96,7 @@ class WriterService implements IWriterService
                 'story_id' => $story_id,
                 'author' => $author->name,
                 'cover' => $story->cover,
+                'status' => $story->status,
                 'views' => $story->views,
                 'rating' => $ratings->avg('rate')
             ],

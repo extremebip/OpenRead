@@ -14,6 +14,7 @@ class AppServiceProvider extends ServiceProvider
      */
     private $repositories = [
         'ChapterRepository',
+        'CommentRepository',
         'GenreRepository',
         'RatingRepository',
         'StoryGenreRepository',
@@ -28,6 +29,7 @@ class AppServiceProvider extends ServiceProvider
      */
     private $services = [
         'AuthService',
+        'ReaderService',
         'UserProfileService',
         'WriterService',
     ];
