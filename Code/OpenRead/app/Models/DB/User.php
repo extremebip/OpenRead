@@ -41,6 +41,12 @@ class User extends Authenticatable
      * @var array
      */
     protected $casts = [
-        'email_verified_at' => 'datetime',
+        'date_of_birth' => 'datetime',
     ];
+
+    protected $primaryKey = 'username';
+
+    public $incrementing = false;
+
+    protected $keyType = 'string';
 }

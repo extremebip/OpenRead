@@ -19,4 +19,10 @@ class Genre extends Model
         'genre_type',
         'description',
     ];
+
+    protected $primaryKey = 'genre_id';
+
+    public $incrementing = false;
+
+    protected $keyType = 'string';
 }

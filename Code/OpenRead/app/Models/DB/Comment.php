@@ -20,4 +20,10 @@ class Comment extends Model
         'username',
         'content',
     ];
+
+    protected $primaryKey = 'comment_id';
+
+    public $incrementing = false;
+
+    protected $keyType = 'string';
 }

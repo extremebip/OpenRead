@@ -2,12 +2,13 @@
 
 namespace App\Models\DB;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\DB\Base\CompositeKey;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Rating extends Model
 {
-    use HasFactory;
+    use HasFactory, CompositeKey;
 
     /**
      * The attributes that are mass assignable.
@@ -19,4 +20,6 @@ class Rating extends Model
         'username',
         'rate',
     ];
+
+    protected $primaryKey = ['story_id', 'username'];
 }

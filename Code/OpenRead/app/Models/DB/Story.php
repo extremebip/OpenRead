@@ -23,4 +23,10 @@ class Story extends Model
         'sinopsis',
         'views',
     ];
+
+    protected $primaryKey = 'story_id';
+
+    public $incrementing = false;
+
+    protected $keyType = 'string';
 }
