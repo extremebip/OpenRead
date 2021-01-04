@@ -35,7 +35,7 @@ class BaseRepository implements IRepository
     public function InsertUpdate(Model $model)
     {
         if ($model->save()){
-            $id = $model->id;
+            $id = $model->id();
             return $model::find($id);
         }
         return null;

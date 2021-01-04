@@ -2,10 +2,11 @@
 
 namespace App\Models\Requests\Auth;
 
-use App\Models\Requests\PostRequest;
+use Carbon\Carbon;
 use Illuminate\Validation\Rule;
+use App\Models\Requests\PostRequest;
 
-class SignUpPostRequest extends PostRequst
+class SignUpPostRequest extends PostRequest
 {
     /**
      * Get the validation rules that apply to the request.
@@ -14,10 +15,12 @@ class SignUpPostRequest extends PostRequst
      */
     public function rules()
     {
+        $today = Carbon::now()->toDateString();
         return [
             'name' => ['required', 'string', 'min:6', 'max:50'],
-            'username' => ['required', 'string', 'max:50', 'unique:users'],
+            'username' => ['required', 'string', 'min:6', 'max:50', 'unique:users'],
             'email' => ['required', 'string', 'email', 'max:50', 'unique:users'],
+            'dob' => ['required', 'date', 'before_or_equal:'.$today],
             'gender' => ['required', 'string', 'max:1', Rule::in(['M', 'F'])],
             'password' => ['required', 'string', 'min:8', 'max:255', 'confirmed'],
         ];
@@ -44,6 +47,10 @@ class SignUpPostRequest extends PostRequst
             'email.email' => 'Email does not match email format',
             'email.max' => 'Email must not have more than :max characters',
             'email.unique' => 'There is an existing email registered',
+
+            'dob.required' => 'Date of Birth must not be empty',
+            'dob.date' => 'Date of Birth is not in valid date input',
+            'dob.before_or_equal' => 'Date of Birth must not exceed today',
 
             'gender.required' => 'Gender must not be empty',
             'gender.max' => 'Gender input does not meet format',

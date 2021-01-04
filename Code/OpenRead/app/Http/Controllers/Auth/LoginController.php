@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers\Auth;
 
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use App\Service\Contracts\IAuthService;
-use Illuminate\Foundation\Auth\AuthenticatesUsers;
-use Illuminate\Http\Request;
+use App\Models\Requests\Auth\LoginPostRequest;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
 class LoginController extends Controller
 {
@@ -39,6 +40,17 @@ class LoginController extends Controller
     protected $checkTo = 'email';
 
     private $authService;
+
+    /**
+     * Error messages when login failed
+     * 
+     * @var array
+     */
+    private $messages = [
+        'username' => 'Username does not exist',
+        'email' => 'E-mail is not associated with any account',
+        'password' => 'Invalid password'
+    ];
 
     /**
      * Create a new controller instance.
@@ -93,7 +105,7 @@ class LoginController extends Controller
      *
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function login(UserLoginPostRequest $request)
+    public function login(LoginPostRequest $request)
     {
         // If the class is using the ThrottlesLogins trait, we can automatically throttle
         // the login attempts for this application. We'll key this by the username and
@@ -106,9 +118,9 @@ class LoginController extends Controller
         }
 
         $data = $request->validatedIntoCollection();
-        $this->checkWith($data['email']);
+        $this->checkWith($data['username']);
 
-        $user = $this->authService->GetUserByEmailOrUsername($data['email']);
+        $user = $this->authService->GetUserByEmailOrUsername($data['username']);
         if (is_null($user)){
             return $this->failedLogin($request, false);
         }
@@ -143,7 +155,7 @@ class LoginController extends Controller
     {
         $user = $request->validatedIntoCollection();
         return [
-            $this->checkTo => $user['email'],
+            $this->checkTo => $user['username'],
             'password' => $user['password']
         ];
     }
@@ -165,7 +177,7 @@ class LoginController extends Controller
             $message = ['password' => [$this->messages[$type]]];
         }
         else {
-            $message = ['email' => [$this->messages[$type]]];
+            $message = ['username' => [$this->messages[$type]]];
         }
 
         throw ValidationException::withMessages($message);

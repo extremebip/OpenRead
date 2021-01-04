@@ -21,8 +21,8 @@ use App\Http\Controllers\Auth\ChangePasswordController;
 */
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
-Route::get('/genre/{genre_id?}', [HomeController::class, 'index'])->name('genre');
-Route::get('/search', [HomeController::class, 'search']);
+Route::get('/genre/{genre_id?}', [HomeController::class, 'genre'])->name('genre');
+Route::get('/search', [HomeController::class, 'search'])->name('search');
 
 Auth::routes(['verify' => false]);
 

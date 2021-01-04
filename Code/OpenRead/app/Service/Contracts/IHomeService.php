@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Service\Modules;
+namespace App\Service\Contracts;
 
 interface IHomeService
 {

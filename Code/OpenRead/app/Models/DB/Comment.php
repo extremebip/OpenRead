@@ -26,4 +26,11 @@ class Comment extends Model
     public $incrementing = false;
 
     protected $keyType = 'string';
+
+    public $timestamps = false;
+
+    public function id()
+    {
+        return $this->comment_id;
+    }
 }

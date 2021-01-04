@@ -2,15 +2,17 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Http\Controllers\Controller;
-use App\Providers\RouteServiceProvider;
 use App\Models\DB\User;
-use App\Models\Requests\Auth\SignUpPostRequest;
-use App\Service\Contracts\IAuthService;
-use Illuminate\Foundation\Auth\RegistersUsers;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
+use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Auth\Events\Registered;
+use App\Providers\RouteServiceProvider;
+use App\Service\Contracts\IAuthService;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Foundation\Auth\RegistersUsers;
+use App\Models\Requests\Auth\SignUpPostRequest;
 
 class RegisterController extends Controller
 {
@@ -54,12 +56,13 @@ class RegisterController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function register(SignUpPostRequest $request)
+    // public function register(Request $request)
     {
-        event(new Registered($peserta = $this->create($request->validatedIntoCollection())));
+        event(new Registered($user = $this->create($request->validatedIntoCollection())));
 
-        $this->guard()->login($peserta);
+        $this->guard()->login($user);
 
-        return $this->registered($request, $peserta)
+        return $this->registered($request, $user)
                         ?: redirect($this->redirectPath());
     }
 

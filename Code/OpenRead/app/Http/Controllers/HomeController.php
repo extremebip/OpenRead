@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Service\Modules\IHomeService;
+use App\Service\Contracts\IHomeService;
 
 class HomeController extends Controller
 {
@@ -46,7 +46,7 @@ class HomeController extends Controller
         if (is_null($genre_id))
             abort(404);
 
-        $result = $this->homeService->GetStoryAndProfileByGenre($genre_id);
+        $result = $this->homeService->GetStoryByGenre($genre_id);
         if (is_null($result))
             abort(404);
 

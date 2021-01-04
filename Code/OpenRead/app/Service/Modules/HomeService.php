@@ -2,6 +2,7 @@
 
 namespace App\Service\Modules;
 
+use App\Service\Contracts\IHomeService;
 use App\Repository\Contracts\IUserRepository;
 use App\Repository\Contracts\IGenreRepository;
 use App\Repository\Contracts\IStoryRepository;
@@ -25,7 +26,7 @@ class HomeService implements IHomeService
     ) {
         $this->genreRepository = $genreRepository;
         $this->ratingRepository = $ratingRepository;
-        $this->storyGenreRepository = storyGenreRepository;
+        $this->storyGenreRepository = $storyGenreRepository;
         $this->storyRepository = $storyRepository;
         $this->userRepository = $userRepository;
     }

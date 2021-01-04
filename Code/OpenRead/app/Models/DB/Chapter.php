@@ -26,4 +26,11 @@ class Chapter extends Model
     public $incrementing = false;
 
     protected $keyType = 'string';
+
+    public $timestamps = false;
+
+    public function id()
+    {
+        return $this->chapter_id;
+    }
 }

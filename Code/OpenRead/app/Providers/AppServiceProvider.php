@@ -3,6 +3,8 @@
 namespace App\Providers;
 
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\View;
+use App\Service\Contracts\IAppService;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -28,6 +30,7 @@ class AppServiceProvider extends ServiceProvider
      * @var array
      */
     private $services = [
+        'AppService',
         'AuthService',
         'HomeService',
         'ReaderService',
@@ -59,7 +62,7 @@ class AppServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot()
+    public function boot(IAppService $appService)
     {
         Collection::macro('toDropdown', function ($value_key, $text_key)
         {
@@ -68,5 +71,17 @@ class AppServiceProvider extends ServiceProvider
                 return [$item[$value_key] => $item[$text_key]];
             });
         });
+        $this->genreViewSharer($appService);
+    }
+
+    /**
+     * Run View Sharer for genre dropdowns
+     *
+     * @return void
+     */
+    private function genreViewSharer($appService)
+    {
+        $genres = $appService->GetGenres();
+        View::share('genres', $genres);
     }
 }

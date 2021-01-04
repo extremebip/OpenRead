@@ -16,4 +16,6 @@ class StoryGenre extends Model
     ];
 
     protected $primaryKey = ['story_id', 'genre_id'];
+
+    public $timestamps = false;
 }

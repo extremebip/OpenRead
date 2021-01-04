@@ -14,7 +14,7 @@ class LoginPostRequest extends PostRequest
     public function rules()
     {
         return [
-            'username' => ['required', 'string', 'min:8'],
+            'username' => ['required', 'string', 'min:6'],
             'password' => ['required', 'string', 'min:8'],
         ];
     }

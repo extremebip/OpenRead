@@ -36,7 +36,7 @@ class AuthService implements IAuthService
         $user->username = $data['username'];
         $user->name = $data['name'];
         $user->email = $data['email'];
-        $user->date_of_birth = $data['date_of_birth'];
+        $user->date_of_birth = $data['dob'];
         $user->gender = $data['gender'];
         $user->password = Hash::make($data['password']);
 

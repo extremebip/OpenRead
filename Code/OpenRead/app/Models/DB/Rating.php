@@ -22,4 +22,6 @@ class Rating extends Model
     ];
 
     protected $primaryKey = ['story_id', 'username'];
+
+    public $timestamps = false;
 }
