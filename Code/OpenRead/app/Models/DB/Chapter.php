@@ -20,4 +20,10 @@ class Chapter extends Model
         'chapter_title',
         'content',
     ];
+
+    protected $primaryKey = 'chapter_id';
+
+    public $incrementing = false;
+
+    protected $keyType = 'string';
 }

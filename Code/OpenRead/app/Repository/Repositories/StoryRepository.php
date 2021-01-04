@@ -28,7 +28,7 @@ class StoryRepository extends BaseRepository implements IStoryRepository
 
     public function FindAllWhereAboveViewsAverageOrderBy($order_by = null, $dir = 'asc')
     {
-        $avg = Story::avg('views');
+        $avg = Story::avg('views') ?? 0;
         return Story::where('views', '>', $avg)
                     ->when($order_by, function ($query, $order_by) use($dir)
                     {
