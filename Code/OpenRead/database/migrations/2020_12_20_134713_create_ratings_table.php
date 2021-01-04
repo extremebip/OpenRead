@@ -20,11 +20,13 @@ class CreateRatingsTable extends Migration
 
             $table->primary(['story_id', 'username']);
             $table->foreign('story_id')
-                  ->constrained('stories', 'story_id')
+                  ->references('story_id')
+                  ->on('stories')
                   ->onUpdate('cascade')
                   ->onDelete('cascade');
             $table->foreign('username')
-                  ->constrained('users', 'username')
+                  ->references('username')
+                  ->on('users')
                   ->onUpdate('cascade')
                   ->onDelete('cascade');
         });

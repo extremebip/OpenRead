@@ -21,7 +21,8 @@ class CreateChaptersTable extends Migration
 
             $table->primary('chapter_id');
             $table->foreign('story_id')
-                  ->constrained('stories', 'story_id')
+                  ->references('story_id')
+                  ->on('stories')
                   ->onUpdate('cascade')
                   ->onDelete('cascade');
         });

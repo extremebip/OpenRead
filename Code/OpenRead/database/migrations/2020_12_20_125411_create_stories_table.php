@@ -24,7 +24,8 @@ class CreateStoriesTable extends Migration
 
             $table->primary('story_id');
             $table->foreign('username')
-                  ->constrained('users', 'username')
+                  ->references('username')
+                  ->on('users')
                   ->onUpdate('cascade')
                   ->onDelete('cascade');
         });

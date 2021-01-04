@@ -19,11 +19,13 @@ class CreateStoryGenresTable extends Migration
 
             $table->primary(['story_id', 'genre_id']);
             $table->foreign('story_id')
-                  ->constrained('stories', 'story_id')
+                  ->references('story_id')
+                  ->on('stories')
                   ->onUpdate('cascade')
                   ->onDelete('cascade');
             $table->foreign('genre_id')
-                  ->constrained('genres', 'genre_id')
+                  ->references('genre_id')
+                  ->on('genres')
                   ->onUpdate('cascade')
                   ->onDelete('cascade');
         });

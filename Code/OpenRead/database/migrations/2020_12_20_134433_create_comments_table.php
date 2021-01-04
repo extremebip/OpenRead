@@ -21,11 +21,13 @@ class CreateCommentsTable extends Migration
 
             $table->primary('comment_id');
             $table->foreign('chapter_id')
-                  ->constrained('chapters', 'chapter_id')
+                  ->references('chapter_id')
+                  ->on('chapters')
                   ->onUpdate('cascade')
                   ->onDelete('cascade');
             $table->foreign('username')
-                  ->constrained('users', 'username')
+                  ->references('username')
+                  ->on('users')
                   ->onUpdate('cascade')
                   ->onDelete('cascade');
         });
