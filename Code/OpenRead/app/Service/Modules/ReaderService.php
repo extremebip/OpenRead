@@ -3,6 +3,7 @@
 namespace App\Service\Modules;
 
 use App\Models\DB\Comment;
+use Illuminate\Support\Facades\Storage;
 use App\Service\Contracts\IReaderService;
 use App\Repository\Contracts\IUserRepository;
 use App\Repository\Contracts\IGenreRepository;
@@ -93,5 +94,18 @@ class ReaderService implements IReaderService
         $comment->username = $data['username'];
         $comment->content = $data['content'];
         return $this->commentRepository->InsertUpdate($comment);
+    }
+
+    public function CheckCoverExist($name)
+    {
+        $result = ['found' => false];
+        $filePath = 'cover/'.$name;
+        if (!Storage::exists($filePath))
+            return $result;
+
+        $result['found'] = true;
+        $result['path'] = storage_path('app/'.$filePath);
+        $result['ext'] = pathinfo($result['path'], PATHINFO_EXTENSION);
+        return $result;
     }
 }

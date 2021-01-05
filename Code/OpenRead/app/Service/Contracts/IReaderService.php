@@ -9,4 +9,5 @@ interface IReaderService
     public function GetCommentsByChapterID($chapter_id);
     public function GetCommentByID($comment_id);
     public function SaveComment($data);
+    public function CheckCoverExist($name);
 }

@@ -32,7 +32,6 @@ class ProfileController extends Controller
         if (Auth::check()){
             $canEdit = (strcmp($username, Auth::user()->username) == 0);
         }
-        // dd($result);
         return view('user.profile', [
             'userData' => $result,
             'canEdit' => $canEdit

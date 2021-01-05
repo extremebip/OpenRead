@@ -43,6 +43,22 @@ class ReaderController extends Controller
         ]);
     }
 
+    public function viewCover($name = null)
+    {
+        try {
+            if (is_null($name))
+                throw new \Exception();
+
+            $result = $this->readerService->CheckCoverExist($name);
+            if (!$result['found'])
+                throw new \Exception();
+
+            return response()->file($result['path'], ['Content-Type' => 'image/'.$result['ext']]);
+        } catch (\Exception $e) {
+            return response()->file(public_path('assets/homepage.png'), ['Content-Type' => 'image/png']);
+        }
+    }
+
     public function postComment(SaveCommentPostRequest $request)
     {
         $data = $request->validated();

@@ -20,7 +20,7 @@
         margin-right: auto;
         font-size: medium;
     }
-    form {
+    #change-password-form {
         padding-left: 15%;
         padding-right: 15%;
     }
@@ -44,7 +44,7 @@
 <div class="content">
     <br>
     <h1>Change Password</h1>
-    {{ Form::open(['route' => 'change-password']) }}
+    {{ Form::open(['route' => 'change-password', 'id' => 'change-password-form']) }}
     <h2>
         {{ Form::label('old_password', 'Old Password') }}
         {{ Form::password('old_password', ['class' => 'signup'.($errors->has('old_password') ? ' is-invalid': '')]) }}

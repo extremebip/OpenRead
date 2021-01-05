@@ -21,4 +21,10 @@ class StoryGenreRepository extends BaseRepository implements IStoryGenreReposito
     {
         return StoryGenre::where('genre_id', '=', $genre_id)->get();
     }
+
+    public function DeleteAllByStory($story_id)
+    {
+        StoryGenre::where('story_id', '=', $story_id)->delete();
+        return $story_id;
+    }
 }

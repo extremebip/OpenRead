@@ -22,7 +22,7 @@ class SaveStoryPostRequest extends PostRequest
         $data = $this->validationData();
         if (isset($data['story_id'])){
             $story = $this->writerService->GetStoryByID($data['story_id']);
-            return (!is_null($story) && $this->user()->username == $story->username);
+            return (!is_null($story) && $this->user()->username == $story['username']);
         }
         return true;
     }
