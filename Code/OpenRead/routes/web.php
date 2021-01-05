@@ -31,6 +31,8 @@ Route::post('/password/change', [ChangePasswordController::class, 'change'])->na
 
 Route::get('/profile', [ProfileController::class, 'index'])->name('show-profile');
 Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('show-edit-profile');
+Route::get('/profile/image/{name?}', [ProfileController::class, 'preview'])->name('preview-image-profile');
+Route::post('/profile/image', [ProfileController::class, 'upload'])->name('upload-image-profile');
 Route::post('/profile/edit', [ProfileController::class, 'save'])->name('save-edit-profile');
 
 Route::get('/stories/write', [WriterController::class, 'index']);

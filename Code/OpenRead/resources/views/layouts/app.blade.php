@@ -1,3 +1,7 @@
+@php
+    if (!isset($canEdit))
+        $canEdit = false;
+@endphp
 <!doctype html>
 <html lang="en">
 <head>
@@ -6,7 +10,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'OpenRead')</title>
 
-    <script src="{{ asset('js/app.js') }}" defer></script>
+    <script src="{{ asset('js/app.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW"
     crossorigin="anonymous"></script>
@@ -32,6 +36,12 @@
                     @endif
                         <a class="nav-link" href="/">Home</a>
                     </li>
+                    @auth
+                        <li class="nav-item px-2">
+                            <a class="nav-link" href="#">Write story</a>
+                        </li>
+                    @endauth
+                    
                     <li class="nav-item dropdown px-2">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
                           aria-expanded="false">Genre</a>
@@ -49,7 +59,7 @@
                         {{ Form::open(['route' => 'search', 'method' => 'GET', 'class' => 'd-flex']) }}
                             <input type="search" class="form-control me-2" placeholder="Search" aria-label="Search" name="q">
                             <button class="btn btn-outline-success search-btn" type="submit">
-                                <img src="assets/search_btn.png" style="width: 16px;" class="img-fluid" alt="Responsive image">
+                                <img src="{{ asset('assets/search_btn.png') }}" style="width: 16px;" class="img-fluid" alt="Responsive image">
                             </button>
                         {{ Form::close() }}
                     </li>
@@ -72,8 +82,19 @@
                             <a class="nav-link" href="{{ route('login') }}">Login</a>
                         </li>
                     @else
+                        @php
+                            $selfProfileURL = route('show-profile', ['u' => Auth::user()->username]);
+                            $active = false;
+                            if (in_array(Route::currentRouteName(), $currentProfileNavbar) && $canEdit){
+                                $active = true;
+                            }
+                        @endphp
+                        @if ($active)
+                        <li class="nav-item px-2 active" aria-current="page">
+                        @else
                         <li class="nav-item px-2">
-                            <a class="nav-link" href="{{ route('show-profile', ['u' => Auth::user()->username]) }}">
+                        @endif
+                            <a class="nav-link" href="{{ $selfProfileURL }}">
                                 Hello, {{ Auth::user()->username }}
                             </a>
                         </li>
@@ -91,6 +112,11 @@
             @yield('content')
         </div>
     </div>
+    <script>
+        $.ajaxSetup({
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')}
+        });
+    </script>
     @yield('script')
 </body>
 </html>

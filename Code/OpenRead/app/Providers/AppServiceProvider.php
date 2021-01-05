@@ -72,6 +72,7 @@ class AppServiceProvider extends ServiceProvider
             });
         });
         $this->genreViewSharer($appService);
+        $this->activeNavbarRouteNamesViewSharer();
     }
 
     /**
@@ -83,5 +84,18 @@ class AppServiceProvider extends ServiceProvider
     {
         $genres = $appService->GetGenres();
         View::share('genres', $genres);
+    }
+
+    /**
+     * Run View Sharer for array of route names
+     *
+     * @return void
+     */
+    private function activeNavbarRouteNamesViewSharer()
+    {
+        View::share('currentProfileNavbar', [
+            'show-profile',
+            'show-edit-profile',
+        ]);
     }
 }

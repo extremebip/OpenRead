@@ -17,7 +17,7 @@ abstract class APIRequest extends PostRequest
     protected function failedValidation(Validator $validator)
     {
         throw new HttpResponseException(response()->json(
-            array_merge($errorResult, ['errors' => $validator->errors()])
+            array_merge($this->errorResult, ['errors' => $validator->errors()])
         , 422));
     }
 }

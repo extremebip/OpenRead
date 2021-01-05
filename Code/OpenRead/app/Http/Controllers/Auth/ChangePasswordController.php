@@ -3,8 +3,9 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Models\Requests\Auth\ChangePasswordPostRequest;
 use Illuminate\Support\Facades\Auth;
+use App\Service\Contracts\IAuthService;
+use App\Models\Requests\Auth\ChangePasswordPostRequest;
 
 class ChangePasswordController extends Controller
 {
@@ -24,6 +25,6 @@ class ChangePasswordController extends Controller
     {
         $user_id = Auth::id();
         $this->authService->ChangePassword($user_id, $request['password']);
-        return redirect($this->redirectTo);
+        return redirect()->route('show-profile', ['u' => $user_id]);
     }
 }

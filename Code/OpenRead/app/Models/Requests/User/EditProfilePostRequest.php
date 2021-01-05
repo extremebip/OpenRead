@@ -7,21 +7,11 @@ use App\Service\Contracts\IUserProfileService;
 
 class EditProfilePostRequest extends PostRequest
 {
-    private $maxProfileImageSize = 20000;
+    private $userProfileService;
 
-    private function getFileSizePostfix($size)
-    {
-        if ($size >= 1000000){
-            return floor($size / 1000000).'GB';
-        }
-        else if ($size >= 1000){
-            return floor($size / 1000).'MB';
-        }
-        else {
-            return $size.'KB';
-        }
+    public function __construct(IUserProfileService $userProfileService) {
+        $this->userProfileService = $userProfileService;
     }
-
     /**
      * Get the validation rules that apply to the request.
      *
@@ -31,7 +21,13 @@ class EditProfilePostRequest extends PostRequest
     {
         return [
             'name' => ['required', 'string', 'min:6', 'max:50'],
-            'profile_picture' => ['present', 'file', 'image', 'max:'.$this->maxCoverImageSize],
+            'new_image' => ['present', function ($attribute, $value, $fail)
+            {
+                $result = $this->userProfileService->CheckImageExist($value, 'temp/');
+                if (!$result['found']){
+                    $fail('Uploaded image cannot be saved. Please upload again');
+                }
+            }],
         ];
     }
 
@@ -67,10 +63,6 @@ class EditProfilePostRequest extends PostRequest
             'email.email' => 'Email does not match email format',
             'email.max' => 'Email must not have more than :max characters',
             'email.unique' => 'There is an existing email registered',
-
-            'profile_picture.file' => 'Profile Picture is not a valid image file',
-            'profile_picture.image' => 'Profile Picture is not a valid image file',
-            'profile_picture.max' => 'Profile Picture size must not exceed '.$this->getFileSizePostfix($this->maxCoverImageSize),
         ];
     }
 
@@ -78,8 +70,7 @@ class EditProfilePostRequest extends PostRequest
     {
         $data = parent::validated();
         return array_merge(parent::validated(), [
-            'username' => $this->user()->username,
-            'change_email' => (strcmp($data['email'], $this->user()->username) != 0)
+            'username' => $this->user()->username
         ]);
     }
 }
