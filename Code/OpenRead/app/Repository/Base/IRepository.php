@@ -13,4 +13,5 @@ interface IRepository
     public function InsertUpdate(Model $model);
     public function Delete($id);
     public function RollbackDelete($id);
+    public function GetLastInsertID();
 }

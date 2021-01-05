@@ -17,7 +17,7 @@ class CreateStoriesTable extends Migration
             $table->string('story_id', 7);
             $table->string('username', 50);
             $table->string('story_title', 50);
-            $table->string('cover', 255);
+            $table->string('cover', 255)->nullable();
             $table->string('status', 10);
             $table->text('sinopsis');
             $table->integer('views')->default(0);

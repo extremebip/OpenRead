@@ -18,4 +18,9 @@ class StoryGenre extends Model
     protected $primaryKey = ['story_id', 'genre_id'];
 
     public $timestamps = false;
+
+    public function id()
+    {
+        return [$this->story_id, $this->genre_id];
+    }
 }

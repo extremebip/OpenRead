@@ -15,7 +15,7 @@ class CreateRatingsTable extends Migration
     {
         Schema::create('ratings', function (Blueprint $table) {
             $table->string('story_id', 7);
-            $table->string('username', 7);
+            $table->string('username', 50);
             $table->tinyInteger('rate');
 
             $table->primary(['story_id', 'username']);

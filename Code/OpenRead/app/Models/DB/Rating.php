@@ -24,4 +24,9 @@ class Rating extends Model
     protected $primaryKey = ['story_id', 'username'];
 
     public $timestamps = false;
+
+    public function id()
+    {
+        return [$this->story_id, $this->username];
+    }
 }

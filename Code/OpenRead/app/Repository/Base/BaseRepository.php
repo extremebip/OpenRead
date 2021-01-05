@@ -3,6 +3,8 @@
 namespace App\Repository\Base;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
+use App\Models\Lookups\DatabaseIDPrefixes;
 
 class BaseRepository implements IRepository
 {
@@ -36,6 +38,14 @@ class BaseRepository implements IRepository
     {
         if ($model->save()){
             $id = $model->id();
+            if (is_array($id)){
+                $pkNames = $model->getKeyName();
+                $query = $model::query();
+                for ($i = 0; $i < count($pkNames); $i++) { 
+                    $query = $query->where($pkNames[$i], '=', $id[$i]);
+                }
+                return $query->get();
+            }
             return $model::find($id);
         }
         return null;
@@ -64,5 +74,18 @@ class BaseRepository implements IRepository
             return $this->model;
         }
         return null;
+    }
+
+    public function GetLastInsertID()
+    {
+        $tableName = $this->model->getTable();
+        $prefix = DatabaseIDPrefixes::GetPrefixByTableName($tableName);
+        $lastRecord = $this->model->orderBy($this->model->getKeyName(), 'desc')->first();
+        if (is_null($lastRecord)){
+            return $prefix.'00001';
+        }
+        $lastId = $lastRecord->id();
+        $lastNumber = intval(ltrim($lastId, $prefix));
+        return $prefix.sprintf('%05d', $lastNumber + 1);
     }
 }
