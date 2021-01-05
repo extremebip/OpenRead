@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', $userData->username.'\'s Profile')
+@section('title', $userData['user']->username.'\'s Profile')
 @section('style')
 <style>
     .content {
@@ -77,52 +77,57 @@
 </style>
 @endsection
 @section('content')
-<center>
-    <br><br>
-    <div class="profile-pic" style="background-image: url({{ route('preview-image-profile', ['name' => $userData->profile_picture]) }})"></div>
-</center>
-<h2>
-    <br><label for="name">{{ $userData->name }}</label><br>
-    <label for="username">{{ $userData->username }}</label><br>
-</h2>
-<div class="content3">
-    <div class="view-by-genre2">
-        <h4>
-            Email : {{ $userData->email }}<br>
-            <br>
-            Date of Birth : {{ $userData->date_of_birth->toFormattedDateString() }}<br>
-        </h4>
+<div class="content">
+    <center>
+        <br><br>
+        <div class="profile-pic" style="background-image: url({{ route('preview-image-profile', ['name' => $userData['user']->profile_picture]) }})"></div>
+    </center>
+    <h2>
+        <br><label for="name">{{ $userData['user']->name }}</label><br>
+        <label for="username">{{ $userData['user']->username }}</label><br>
+    </h2>
+    <div class="content3">
+        <div class="view-by-genre2">
+            <h4>
+                Email : {{ $userData['user']->email }}<br>
+                <br>
+                Date of Birth : {{ $userData['user']->date_of_birth->toFormattedDateString() }}<br>
+            </h4>
+        </div>
+        @if ($canEdit)
+        <a class="btn btn-secondary btn-openread" href="{{ route('change-password') }}">Change Password</a>
+        <a class="btn btn-secondary btn-openread" href="{{ route('show-edit-profile') }}">Edit Profile</a>
+        @endif
     </div>
-    @if ($canEdit)
-    <a class="btn btn-secondary btn-openread" href="{{ route('change-password') }}">Change Password</a>
-    <a class="btn btn-secondary btn-openread" href="{{ route('show-edit-profile') }}">Edit Profile</a>
-    @endif
-</div>
-<div class="content2">
-    <div class="view-by-genre text-white">
-        <table class="table table-borderless">
+    <div class="content2">
+        <div class="view-by-genre text-white">
             <div><p class="title2">Recent Stories</p></div>
+            @forelse ($userData['stories'] as $story)
             <tr>
                 <div class="display-story">
                     <img src="assets/homepage.png" alt="" class="display-cover">
                     <div>
-                        <p class="display-title display-content">Judul Story</p>
+                        <p class="display-title">{{ $story['title'] }}</p>
                         <div>
                             <img class="rate-view-icon display-content" src="assets/Star.svg.png" alt="">
-                            <p3 class="display-content">3.04</p3>
+                            <p3 class="display-content">{{ sprintf("%.2f", $story['rate']) }}</p3>
                             <img class="rate-view-icon display-content" src="assets/view.png" alt="">
-                            <p3 class="display-content">1200</p3>
+                            <p3 class="display-content">{{ $story['views'] }}</p3>
                         </div>
                         <p4 class="display-content text-break">
-                            Lorem, ipsum dolor sit amet consectetur
-                            adipisicing elit. Eaque similique placeat nobis est deleniti? Ipsum unde officiis
-                            sed corrupti harum minima sequi quas assumenda odit, similique suscipit accusamus
-                            veniam sunt.
+                            {{ $story['synopsis'] }}
                         </p4>
                     </div>
                 </div>
             </tr>
-        </table>
+            @empty
+                @if ($canEdit)
+                    <p>You haven't created any stories</p>
+                @else
+                    <p>This user haven't created any stories</p>
+                @endif
+            @endforelse
+        </div>
     </div>
 </div>
 @endsection

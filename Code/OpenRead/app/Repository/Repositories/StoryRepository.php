@@ -56,4 +56,13 @@ class StoryRepository extends BaseRepository implements IStoryRepository
                     ->limit($limit)
                     ->get();
     }
+
+    public function FindAllByUserLimitByOrderBy($username, $limit, $order_by = 'story_id', $dir = 'asc')
+    {
+        return Story::where('username', '=', $username)
+                    ->orderBy($order_by, $dir)
+                    ->offset(0)
+                    ->limit($limit)
+                    ->get();
+    }
 }

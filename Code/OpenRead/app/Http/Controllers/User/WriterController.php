@@ -33,7 +33,9 @@ class WriterController extends Controller
 
     public function edit()
     {
+        $genre_selects = $this->writerService->GetGenres()->toDropdown('genre_id', 'genre_type');
         return view('user.writer.story', [
+            'genre_selects' => $genre_selects,
             'create' => false,
         ]);
     }
@@ -43,13 +45,13 @@ class WriterController extends Controller
         $data = $request->validated();
         if (isset($data['story_id']))
         {
-            $this->writerService->CreateStory($data);
+            $result = $this->writerService->UpdateStory($data);
         }
         else 
         {
-            $this->writerService->UpdateStory($data);
+            $result = $this->writerService->CreateStory($data);
         }
-        return redirect()->route('');
+        return redirect()->route('home');
     }
 
     public function chooseChapter()

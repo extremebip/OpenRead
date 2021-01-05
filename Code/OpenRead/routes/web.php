@@ -35,9 +35,10 @@ Route::get('/profile/image/{name?}', [ProfileController::class, 'preview'])->nam
 Route::post('/profile/image', [ProfileController::class, 'upload'])->name('upload-image-profile');
 Route::post('/profile/edit', [ProfileController::class, 'save'])->name('save-edit-profile');
 
-Route::get('/stories/write', [WriterController::class, 'index']);
-Route::get('/stories/create', [WriterController::class, 'create']);
+Route::get('/stories/write', [WriterController::class, 'index'])->name('write-menu');
+Route::get('/stories/create', [WriterController::class, 'create'])->name('show-create-story');
 //Route::get('/stories/edit', [WriterController::class, 'edit']);
+Route::post('/stories/save', [WriterController::class, 'save'])->name('save-story');
 
 Route::get('/stories/{story_id?}', [ReaderController::class, 'index']);
 Route::get('/chapters/{chapter_id?}', [ReaderController::class, 'chapter']);

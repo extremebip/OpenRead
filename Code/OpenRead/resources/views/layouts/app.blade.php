@@ -37,8 +37,12 @@
                         <a class="nav-link" href="/">Home</a>
                     </li>
                     @auth
+                        @if (Route::currentRouteName() == "write-menu")
+                        <li class="nav-item px-2 active" aria-current="page">
+                        @else
                         <li class="nav-item px-2">
-                            <a class="nav-link" href="#">Write story</a>
+                        @endif
+                            <a class="nav-link" href="{{ route('write-menu') }}">Write story</a>
                         </li>
                     @endauth
                     
@@ -108,9 +112,7 @@
                 </ul>
             </div>
         </nav>
-        <div class="content">
-            @yield('content')
-        </div>
+        @yield('content')
     </div>
     <script>
         $.ajaxSetup({

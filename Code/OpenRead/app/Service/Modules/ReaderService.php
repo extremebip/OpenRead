@@ -35,7 +35,7 @@ class ReaderService implements IReaderService
         $this->commentRepository = $commentRepository;
         $this->genreRepository = $genreRepository;
         $this->ratingRepository = $ratingRepository;
-        $this->storyGenreRepository = storyGenreRepository;
+        $this->storyGenreRepository = $storyGenreRepository;
         $this->storyRepository = $storyRepository;
         $this->userRepository = $userRepository;
     }

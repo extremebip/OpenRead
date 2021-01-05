@@ -8,35 +8,61 @@ use Illuminate\Support\Facades\Storage;
 use App\Repository\Contracts\IUserRepository;
 use App\Repository\Contracts\IStoryRepository;
 use App\Service\Contracts\IUserProfileService;
+use App\Repository\Contracts\IRatingRepository;
 
 class UserProfileService implements IUserProfileService
 {
+    private $ratingRepository;
     private $storyRepository;
     private $userRepository;
 
     public function __construct(
+        IRatingRepository $ratingRepository,
         IStoryRepository $storyRepository,
         IUserRepository $userRepository
     ) {
+        $this->ratingRepository = $ratingRepository;
         $this->storyRepository = $storyRepository;
         $this->userRepository = $userRepository;
     }
 
     public function GetUserWithStories($username)
     {
-        $retVal = [
+        $result = [
             'user' => null,
             'stories' => collect()
         ];
         $user = $this->userRepository->Find($username);
         if (!is_null($user)){
-            $retVal['user'] = $user;
-            $stories = $this->storyRepository->FindAllByUser($username);
-            // if ($stories->count() > 0){
-            //     $storyIds = $stories->pluck('story_id');
-            // }
+            $takeLimit = 3;
+            $result['user'] = $user;
+            $stories = $this->storyRepository->FindAllByUserLimitByOrderBy($username, $takeLimit, 'story_id', 'desc');
+            if ($stories->count() == 0){
+                return $result;
+            }
+            $story_ids = $stories->pluck('story_id');
+            $story_ratings = $this->ratingRepository->FindAllByStories($story_ids);
+            $groupRatingsByStory = $story_ratings->groupBy('story_id');
+            $mapStoryRatings = $groupRatingsByStory->mapWithKeys(function ($item, $key)
+            {
+                $temp = collect($item);
+                return [$key => $temp->avg('rate')];
+            })->sort();
+            $result['stories'] = $stories->map(function ($item, $key) use($mapStoryRatings)
+            {
+                $rate = 0;
+                if (isset($mapStoryRatings[$item->story_id]))
+                    $rate = $mapStoryRatings[$item->story_id];
+                return [
+                    'title' => $item->story_title,
+                    'rate' => $rate,
+                    'views' => $item->views,
+                    'cover' => $item->cover,
+                    'synopsis' => $item->sinopsis
+                ];
+            });
         }
-        return $retVal;
+        return $result;
     }
 
     public function GetUser($username)

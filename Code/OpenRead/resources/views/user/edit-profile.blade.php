@@ -73,60 +73,62 @@
 </style>
 @endsection
 @section('content')
-<br><br>
-<h1>Change Profile</h1>
-<center>
-    @php
-        $imageUrlParam = ['name' => $user->profile_picture];
-        if (!is_null(old('new_image')) && !$errors->has('new_image')){
-            $imageUrlParam['name'] = old('new_image');
-            $imageUrlParam['temp'] = 'true';
-        }
-        $imageUrl = route('preview-image-profile', $imageUrlParam);
-    @endphp
+<div class="content">
     <br><br>
-    {{ Form::open(['route' => 'save-edit-profile', 'files' => true, 'id' => 'image-form']) }}
-        {{ Form::hidden('username', Auth::id(), ['id' => 'image-username']) }}
-        <label for="image-file">
-            <div class="profile-pic" 
-                style="background-image: url({{ $imageUrl }});">
-                <span>Change Image</span>
-            </div>
-        </label>
-        {{ Form::file('image-file', ['id' => 'image-file', 'class' => 'is-invalid']) }}
-        <span class="invalid-feedback" role="alert" id="validation-message-wrapper">
-            <strong id="validation-message">
-                @error('new_image') {{ $message }} @enderror
-            </strong>
-        </span>
-    {{ Form::close() }}
-</center>
-{{ Form::open(['route' => 'save-edit-profile']) }}
-    {{ Form::hidden('new_image', null, ['id' => 'new-image']) }}
-    <h2>
-        {{ Form::label('name', 'Name') }}
-        {{ Form::text('name', old('name') ?? $user->name, ['class' => 'signup'.($errors->has('name') ? ' is-invalid': ''), 'autofocus']) }}
-        @error('name')
-            <span class="invalid-feedback" role="alert">
-                <strong>{{ $message }}</strong>
-            </span>
-        @enderror
-        <br>
-
-        {{ Form::label('email', 'Email') }}
-        {{ Form::email('email', old('email') ?? $user->email, ['class' => 'signup'.($errors->has('email') ? ' is-invalid': '')]) }}
-        @error('email')
-            <span class="invalid-feedback" role="alert">
-                <strong>{{ $message }}</strong>
-            </span>
-        @enderror
-        <br>
-    </h2>
+    <h1>Change Profile</h1>
     <center>
-        <button type="submit" class="btn btn-secondary btn-openread" style="background-color: #6D6E7D; width:100px;">Save</button>
-        <a class="btn btn-secondary btn-openread" style="background-color: #6D6E7D; width:100px;" href="{{ route('show-profile', ['u' => $user->username]) }}">Cancel</a>
+        @php
+            $imageUrlParam = ['name' => $user->profile_picture];
+            if (!is_null(old('new_image')) && !$errors->has('new_image')){
+                $imageUrlParam['name'] = old('new_image');
+                $imageUrlParam['temp'] = 'true';
+            }
+            $imageUrl = route('preview-image-profile', $imageUrlParam);
+        @endphp
+        <br><br>
+        {{ Form::open(['route' => 'save-edit-profile', 'files' => true, 'id' => 'image-form']) }}
+            {{ Form::hidden('username', Auth::id(), ['id' => 'image-username']) }}
+            <label for="image-file">
+                <div class="profile-pic" 
+                    style="background-image: url({{ $imageUrl }});">
+                    <span>Change Image</span>
+                </div>
+            </label>
+            {{ Form::file('image-file', ['id' => 'image-file', 'class' => 'is-invalid']) }}
+            <span class="invalid-feedback" role="alert" id="validation-message-wrapper">
+                <strong id="validation-message">
+                    @error('new_image') {{ $message }} @enderror
+                </strong>
+            </span>
+        {{ Form::close() }}
     </center>
-{{ Form::close() }}
+    {{ Form::open(['route' => 'save-edit-profile']) }}
+        {{ Form::hidden('new_image', null, ['id' => 'new-image']) }}
+        <h2>
+            {{ Form::label('name', 'Name') }}
+            {{ Form::text('name', old('name') ?? $user->name, ['class' => 'signup'.($errors->has('name') ? ' is-invalid': ''), 'autofocus']) }}
+            @error('name')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+            @enderror
+            <br>
+
+            {{ Form::label('email', 'Email') }}
+            {{ Form::email('email', old('email') ?? $user->email, ['class' => 'signup'.($errors->has('email') ? ' is-invalid': '')]) }}
+            @error('email')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+            @enderror
+            <br>
+        </h2>
+        <center>
+            <button type="submit" class="btn btn-secondary btn-openread" style="background-color: #6D6E7D; width:100px;">Save</button>
+            <a class="btn btn-secondary btn-openread" style="background-color: #6D6E7D; width:100px;" href="{{ route('show-profile', ['u' => $user->username]) }}">Cancel</a>
+        </center>
+    {{ Form::close() }}
+</div>
 @endsection
 
 @section('script')
@@ -153,7 +155,7 @@
                     cache: false,
                     processData:false,
                     beforeSend: function () {
-                        $('#validation-message').text('');
+                        ShowImageValidationMessage(true, 'Uploading...');
                     },
                     success: function (data) {
                         console.log(data);

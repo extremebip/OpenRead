@@ -24,15 +24,15 @@ class ProfileController extends Controller
         $username = $request->query('u');
         if (is_null($username))
             abort(404);
-        $result = $this->userProfileService->GetUser($username);
-        // if (is_null($result['user']))
-        if (is_null($result))
+        $result = $this->userProfileService->GetUserWithStories($username);
+        if (is_null($result['user']))
             abort(404);
 
         $canEdit = false;
         if (Auth::check()){
             $canEdit = (strcmp($username, Auth::user()->username) == 0);
         }
+        // dd($result);
         return view('user.profile', [
             'userData' => $result,
             'canEdit' => $canEdit

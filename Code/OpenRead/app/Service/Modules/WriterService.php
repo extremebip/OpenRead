@@ -4,7 +4,10 @@ namespace App\Service\Modules;
 
 use App\Models\DB\Story;
 use App\Models\DB\Chapter;
+use Illuminate\Support\Str;
+use App\Models\DB\StoryGenre;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use App\Service\Contracts\IWriterService;
 use App\Repository\Contracts\IUserRepository;
 use App\Repository\Contracts\IGenreRepository;
@@ -33,7 +36,7 @@ class WriterService implements IWriterService
         $this->chapterRepository = $chapterRepository;
         $this->genreRepository = $genreRepository;
         $this->ratingRepository = $ratingRepository;
-        $this->storyGenreRepository = storyGenreRepository;
+        $this->storyGenreRepository = $storyGenreRepository;
         $this->storyRepository = $storyRepository;
         $this->userRepository = $userRepository;
     }
@@ -53,17 +56,33 @@ class WriterService implements IWriterService
         try {
             $story = new Story();
 
+            $story->story_id = $this->storyRepository->GetLastInsertID();
             $story->username = $data['username'];
             $story->story_title = $data['story_title'];
-            // $story->cover = 
             $story->status = 'Ongoing';
             $story->sinopsis = $data['sinopsis'];
             $story->views = 0;
 
+            if (isset($data['cover'])){
+                $coverFile = $data['cover'];
+                $newFileName = (string) Str::uuid().'.'.$coverFile->extension();
+                Storage::putFileAs('cover/', $coverFile, $newFileName);
+                $story->cover = $newFileName;
+            }
+
             $result['Story'] = $this->storyRepository->InsertUpdate($story);
+
+            foreach ($data['genres'] as $genre_id) {
+                $story_genre = new StoryGenre();
+                $story_genre->story_id = $story->story_id;
+                $story_genre->genre_id = $genre_id;
+                $this->storyGenreRepository->InsertUpdate($story_genre);
+            }
+
             DB::commit();
         } catch (\Exception $e) {
             DB::rollback();
+            dd($e);
             $result['Success'] = false;
             $result['Error Message'] = $e->getMessage();
         }

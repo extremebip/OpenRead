@@ -27,31 +27,33 @@ h2 {
 @endsection
 
 @section('content')
-<p class="title text-white">Log in</p>
-{{ Form::open(['route' => 'login']) }}
-    <h2>
-        {{ Form::label('username', 'Username / E-mail') }}
-        {{ Form::text('username', @old('username'), ['class' => 'signup'.($errors->has('username') ? ' is-invalid': ''), 'autofocus']) }}
-        @error('username')
-            <span class="invalid-feedback" role="alert">
-                <strong>{{ $message }}</strong>
-            </span>
-        @enderror
-        <br>
-        {{ Form::label('password', 'Password') }}
-        {{ Form::password('password', ['class' => 'signup'.($errors->has('password') ? ' is-invalid': '')]) }} 
-        @error('password')
-            <span class="invalid-feedback" role="alert">
-                <strong>{{ $message }}</strong>
-            </span>
-        @enderror
-        <br>
-    </h2>
-    <center>
-        <br><br>
-        <button class="btn btn-secondary btn-openread" type="submit" style="background-color: #6D6E7D;">
-            Log in
-        </button>
-    </center>
-{{ Form::close() }}
+<div class="content">
+    <p class="title text-white">Log in</p>
+    {{ Form::open(['route' => 'login']) }}
+        <h2>
+            {{ Form::label('username', 'Username / E-mail') }}
+            {{ Form::text('username', @old('username'), ['class' => 'signup'.($errors->has('username') ? ' is-invalid': ''), 'autofocus']) }}
+            @error('username')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+            @enderror
+            <br>
+            {{ Form::label('password', 'Password') }}
+            {{ Form::password('password', ['class' => 'signup'.($errors->has('password') ? ' is-invalid': '')]) }} 
+            @error('password')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{ $message }}</strong>
+                </span>
+            @enderror
+            <br>
+        </h2>
+        <center>
+            <br><br>
+            <button class="btn btn-secondary btn-openread" type="submit" style="background-color: #6D6E7D;">
+                Log in
+            </button>
+        </center>
+    {{ Form::close() }}
+</div>
 @endsection

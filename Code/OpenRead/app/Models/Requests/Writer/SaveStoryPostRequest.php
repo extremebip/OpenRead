@@ -51,9 +51,17 @@ class SaveStoryPostRequest extends PostRequest
     {
         return [
             'story_title' => ['required', 'string', 'min:5', 'max:50'],
-            'cover' => ['present', 'file', 'image', 'max:'.$this->maxCoverImageSize],
+            'cover' => ['sometimes', 'file', 'image', 'max:'.$this->maxCoverImageSize],
             'sinopsis' => ['required', 'string', 'max:65535'],
-            'story_id' => ['sometimes', 'required', 'exists:stories,story_id']
+            'story_id' => ['sometimes', 'required', 'exists:stories,story_id'],
+            'genres' => ['required', 'array', function ($attribute, $value, $fail)
+            {
+                $all_genre_ids = $this->writerService->GetGenres()->pluck('genre_id');
+                foreach ($value as $item) {
+                    if (!$all_genre_ids->contains($item))
+                        $fail('Invalid genre input');
+                }
+            }],
         ];
     }
 
@@ -77,13 +85,18 @@ class SaveStoryPostRequest extends PostRequest
             'sinopsis.max' => 'Synopsis must not exceed :max characters',
 
             'story_id.exists' => 'Story does not exist',
+
+            'genres.required' => 'Select at least one genre',
+            'genres.array' => 'Invalid genre input',
         ];
     }
 
     public function validated()
     {
-        return array_merge(parent::validated(), [
-            'username' => $this->user()->username
+        $validated = parent::validated();
+        return array_merge($validated, [
+            'username' => $this->user()->username,
+            'genres' => collect($validated['genres'])->unique()
         ]);
     }
 }
