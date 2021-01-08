@@ -47,7 +47,7 @@
                             <p class="display-title display-content">{{ $story['title'] }}</p>
                             <div>
                                 <img class="rate-view-icon display-content" src="{{ asset('assets/Star.svg.png') }}" alt="">
-                                <span class="display-content">{{ $story['rate'] }}</span>
+                                <span class="display-content">{{ sprintf("%.2f", $story['rate']) }}</span>
                                 <img class="rate-view-icon display-content" src="{{ asset('assets/view.png') }}" alt="">
                                 <span class="display-content">{{ $story['views'] }}</span>
                             </div>

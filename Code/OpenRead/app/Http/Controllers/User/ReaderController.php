@@ -5,7 +5,7 @@ namespace App\Http\Controllers\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Service\Contracts\IReaderService;
-use App\Models\Requests\SaveCommentPostRequest;
+use App\Models\Requests\Reader\SaveCommentPostRequest;
 
 class ReaderController extends Controller
 {
@@ -18,28 +18,28 @@ class ReaderController extends Controller
     public function index($story_id = null)
     {
         if (is_null($story_id))
-            return redirect('/');
+            return redirect()->route('home');
         
-        $story = $this->readerService->GetStoryByID($story_id);
-        if (is_null($story))
+        $result = $this->readerService->GetStoryByID($story_id);
+        if (is_null($result))
             abort(404);
 
-        return view('user.reader.story', $story);
+        return view('user.reader.story', $result);
     }
 
-    public function chapter($chapter_id)
+    public function chapter($chapter_id = null)
     {
         if (is_null($chapter_id))
             abort(404);
 
-        $chapter = $this->readerService->GetChapterByID($chapter_id);
-        if (is_null($chapter))
+        $result = $this->readerService->GetChapterByID($chapter_id);
+        if (is_null($result))
             abort(404);
 
         $comments = $this->readerService->GetCommentsByChapterID($chapter_id);
         return view('user.reader.chapter', [
-            'chapter' => $chapter->toArray(),
-            'comments' => $comments->toArray()
+            'result' => $result,
+            'comments' => $comments
         ]);
     }
 
@@ -63,6 +63,7 @@ class ReaderController extends Controller
     {
         $data = $request->validated();
         $comment = $this->readerService->SaveComment($data);
+        $comment['photo_url'] = route('preview-image-profile', ['name' => $comment['profile_picture']]);
         return response()->json([
             'comment' => $comment
         ], 200);

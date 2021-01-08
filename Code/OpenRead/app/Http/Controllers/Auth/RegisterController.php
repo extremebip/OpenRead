@@ -56,7 +56,6 @@ class RegisterController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function register(SignUpPostRequest $request)
-    // public function register(Request $request)
     {
         event(new Registered($user = $this->create($request->validatedIntoCollection())));
 

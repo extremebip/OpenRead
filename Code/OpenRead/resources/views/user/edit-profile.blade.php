@@ -79,7 +79,7 @@
                             <span>Change Image</span>
                         </div>
                     </label>
-                    {{ Form::file('image-file', ['id' => 'image-file', 'class' => 'is-invalid']) }}
+                    {{ Form::file('image-file', ['id' => 'image-file', 'class' => 'form-control is-invalid']) }}
                     <span class="invalid-feedback" role="alert" id="validation-message-wrapper">
                         <strong id="validation-message">
                             @error('new_image') {{ $message }} @enderror
@@ -148,7 +148,6 @@
                         ShowImageValidationMessage(true, 'Uploading...');
                     },
                     success: function (data) {
-                        console.log(data);
                         ShowImageValidationMessage(true, 'Image successfully uploaded');
                         $('#new-image').val(data.name);
                         $('.profile-pic').css('background-image', `url(${data.url})`);

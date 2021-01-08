@@ -30,4 +30,9 @@ class UserRepository extends BaseRepository implements IUserRepository
                     ->limit($limit)
                     ->get();
     }
+
+    public function FindAllByUsernames($usernames)
+    {
+        return User::whereIn('username', $usernames)->get();
+    }
 }

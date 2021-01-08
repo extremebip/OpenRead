@@ -8,7 +8,6 @@ use Illuminate\Http\Exceptions\HttpResponseException;
 
 abstract class APIRequest extends PostRequest
 {
-    protected $errorResult = [];
     /**
      * If validator fails return the exception in json form
      * @param Validator $validator
@@ -16,8 +15,19 @@ abstract class APIRequest extends PostRequest
      */
     protected function failedValidation(Validator $validator)
     {
+        $errorResult = $this->setErrorResult();
         throw new HttpResponseException(response()->json(
-            array_merge($this->errorResult, ['errors' => $validator->errors()])
+            array_merge($errorResult, ['errors' => $validator->errors()])
         , 422));
+    }
+
+    /**
+     * Set Error Result if validator fails
+     * 
+     * @return array
+     */
+    protected function setErrorResult()
+    {
+        return [];
     }
 }
