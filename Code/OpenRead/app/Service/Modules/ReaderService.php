@@ -2,6 +2,7 @@
 
 namespace App\Service\Modules;
 
+use App\Models\DB\Rating;
 use App\Models\DB\Comment;
 use Illuminate\Support\Facades\Storage;
 use App\Service\Contracts\IReaderService;
@@ -75,6 +76,57 @@ class ReaderService implements IReaderService
                     'title' => $item->chapter_title
                 ];
             })
+        ];
+    }
+
+    public function GetRatingByStoryAndUser($story_id, $username)
+    {
+        $rating = $this->ratingRepository->FindByStoryAndUser($story_id, $username);
+        if (is_null($rating))
+            return null;
+
+        return [
+            'story_id' => $rating->story_id,
+            'username' => $rating->username,
+            'rate' => $rating->rate,
+        ];
+    }
+
+    public function RateStory($data)
+    {
+        $rateNum = intval($data['rate']);
+        if ($rateNum < 1 || $rateNum > 5)
+            return null;
+
+        $story = $this->storyRepository->Find($data['story_id']);
+        if (is_null($story))
+            return null;
+
+        $rating = $this->ratingRepository->FindByStoryAndUser($data['story_id'], $data['username']);
+        if (is_null($rating)){
+            $rating = new Rating();
+
+            $rating->story_id = $data['story_id'];
+            $rating->username = $data['username'];
+            $rating->rate = $rateNum;
+        }
+        else {
+            $rating->rate = $rateNum;
+        }
+
+        $savedRating = $this->ratingRepository->InsertUpdate($rating);
+        if (is_null($savedRating))
+            return null;
+
+        $allRatings = $this->ratingRepository->FindAllByStories([$savedRating[0]->story_id]);
+        $newRating = sprintf('%.2f', $allRatings->avg('rate') ?? 0); 
+        return [
+            'rating' => [
+                'story_id' => $savedRating[0]->story_id,
+                'username' => $savedRating[0]->username,
+                'rate' => $savedRating[0]->rate,
+            ],
+            'new_rate' => $newRating,
         ];
     }
 

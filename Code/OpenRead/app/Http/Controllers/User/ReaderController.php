@@ -4,6 +4,7 @@ namespace App\Http\Controllers\User;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use App\Service\Contracts\IReaderService;
 use App\Models\Requests\Reader\SaveCommentPostRequest;
 
@@ -13,6 +14,7 @@ class ReaderController extends Controller
 
     public function __construct(IReaderService $readerService) {
         $this->readerService = $readerService;
+        $this->middleware(['auth', 'throttle:5,1'])->only('rate', 'postComment');
     }
 
     public function index($story_id = null)
@@ -24,6 +26,10 @@ class ReaderController extends Controller
         if (is_null($result))
             abort(404);
 
+        if (Auth::check()){
+            $result['userRating'] = $this->readerService->GetRatingByStoryAndUser($story_id, Auth::id());
+        }
+        
         return view('user.reader.story', $result);
     }
 
@@ -56,6 +62,38 @@ class ReaderController extends Controller
             return response()->file($result['path'], ['Content-Type' => 'image/'.$result['ext']]);
         } catch (\Exception $e) {
             return response()->file(public_path('assets/homepage.png'), ['Content-Type' => 'image/png']);
+        }
+    }
+
+    public function rate(Request $request, $story_id = null)
+    {
+        $result = [
+            'success' => false,
+            'message' => ''
+        ];
+        try {
+            if (is_null($story_id))
+                throw new \Exception('Invalid story id');
+
+            $data = [
+                'story_id' => $story_id,
+                'username' => Auth::id(),
+                'rate' => $request->rate
+            ];
+            $result = $this->readerService->RateStory($data);
+            if (is_null($result))
+                throw new \Exception('Invalid rate input');
+
+            $result['success'] = true;
+            return response()->json([
+                'result' => $result,
+            ], 200);
+        } catch (\Exception $e) {
+            dd($e);
+            $result['message'] = $e->getMessage();
+            return response()->json([
+                'result' => $result,
+            ], 200);
         }
     }
 

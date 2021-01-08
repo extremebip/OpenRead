@@ -16,4 +16,11 @@ class RatingRepository extends BaseRepository implements IRatingRepository
     {
         return Rating::whereIn('story_id', $story_ids)->get();
     }
+
+    public function FindByStoryAndUser($story_id, $username)
+    {
+        return Rating::where('story_id', '=', $story_id)
+                     ->where('username', '=', $username)
+                     ->first();
+    }
 }

@@ -15,6 +15,15 @@
 </style>
 @endsection
 
+@php
+    $rate = 0;
+    if (isset($userRating)){
+        $rate = $userRating['rate'];
+    }
+@endphp
+
+@if($rate == 1) {{ 'active' }} @endif
+
 @section('content')
 <div class="content text-white container">
     <div class="row">
@@ -32,18 +41,18 @@
             <div type="px-2"style="display: flex;">
                 <span class="display-content font px-2">Rate : </span>
                 <div class="btn-group btn-spacing px-2" role="group" aria-label="Basic example">
-                    <button type="button" class="btn btn-secondary">1</button>
-                    <button type="button" class="btn btn-secondary">2</button>
-                    <button type="button" class="btn btn-secondary">3</button>
-                    <button type="button" class="btn btn-secondary">4</button>
-                    <button type="button" class="btn btn-secondary">5</button>
+                    <button type="button" class="btn btn-secondary" id="rate-1" onclick="submitRating(1);">1</button>
+                    <button type="button" class="btn btn-secondary" id="rate-2" onclick="submitRating(2);">2</button>
+                    <button type="button" class="btn btn-secondary" id="rate-3" onclick="submitRating(3);">3</button>
+                    <button type="button" class="btn btn-secondary" id="rate-4" onclick="submitRating(4);">4</button>
+                    <button type="button" class="btn btn-secondary" id="rate-5" onclick="submitRating(5);">5</button>
                 </div>
             </div>
             @endauth
 
             <div>
                 <img class="display-content" style="width: 30px;" src="{{ asset('assets/Star.svg.png') }}" alt="">
-                <span class="display-content px-2" style="font-size: 22px;">{{ sprintf("%.2f", $story['rate']) }}</span>
+                <span class="display-content px-2" style="font-size: 22px;" id="rating">{{ sprintf("%.2f", $story['rate']) }}</span>
                 <img class="display-content" style="width: 30px;" src="{{ asset('assets/view.png') }}" alt="">
                 <span class="display-content px-2" style="font-size: 22px;">{{ $story['views'] }}</span>
             </div>
@@ -72,4 +81,46 @@
         </div>
     </div>
 </div>
+@endsection
+
+@section('script')
+<script>
+    $(document).ready(function () {
+        setActiveRateBtn({{ $rate }});
+    });
+
+    function submitRating(rate) {
+        $.ajax({
+            url: "{{ route('rate-story', ['story_id' => $story['story_id'] ]) }}",
+            type: "POST",
+            data: { rate : rate },
+            success: function (data) {
+                console.log(data);
+                var result = data.result;
+                if (result.success){
+                    $('#rating').text(result.new_rate);
+                    setActiveRateBtn(result.rating.rate);
+                }
+            },
+            error: function (e) {
+                if (e.status == 429){
+                    alert('You have spammed too much requests! Please wait to make another one!');
+                }
+                else {
+                    alert('An error has happened! Please refresh the page!');
+                }
+            }
+        });
+    }
+
+    function setActiveRateBtn(rate) {
+        $('#rate-1').removeClass('active');
+        $('#rate-2').removeClass('active');
+        $('#rate-3').removeClass('active');
+        $('#rate-4').removeClass('active');
+        $('#rate-5').removeClass('active');
+
+        $(`#rate-${rate}`).addClass('active');
+    }
+</script>
 @endsection

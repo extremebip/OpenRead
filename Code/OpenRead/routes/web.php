@@ -49,5 +49,6 @@ Route::post('/chapters/delete', [WriterController::class, 'deleteChapter'])->nam
 
 Route::get('/stories/{story_id?}', [ReaderController::class, 'index'])->name('read-story');
 Route::get('/stories/cover/{name?}', [ReaderController::class, 'viewCover'])->name('view-story-cover');
+Route::post('/stories/{story_id?}/rate', [ReaderController::class, 'rate'])->name('rate-story');
 Route::get('/chapters/{chapter_id?}', [ReaderController::class, 'chapter'])->name('read-chapter');
 Route::post('/comment', [ReaderController::class, 'postComment'])->name('save-comment');
