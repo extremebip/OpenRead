@@ -31,7 +31,6 @@ class HomeController extends Controller
         if (is_null($result))
             abort(404);
 
-        // dd($result);
         return view('search', $result);
     }
 

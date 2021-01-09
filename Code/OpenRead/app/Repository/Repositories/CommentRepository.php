@@ -16,4 +16,17 @@ class CommentRepository extends BaseRepository implements ICommentRepository
     {
         return Comment::where('chapter_id', '=', $chapter_id)->get();
     }
+
+    public function FindAllByChapterOffsetByLimitBy($chapter_id, $offset = 0, $limit = 10)
+    {
+        return Comment::where('chapter_id', '=', $chapter_id)
+                      ->offset($offset)
+                      ->limit($limit)
+                      ->get();
+    }
+
+    public function FindAllCommentCountByChapter($chapter_id)
+    {
+        return Comment::where('chapter_id', '=', $chapter_id)->count();
+    }
 }

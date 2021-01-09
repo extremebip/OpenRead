@@ -82,9 +82,9 @@
             <div class="modal-body">
                 <div class="overflow-auto comment-box" style="width: 100%;">
                     @forelse ($comments as $comment)
-                    <div class="display-story" style="display: inline-flex; margin:12px 20px 12px 10px">
+                    <div class="display-story" style="display: inline-flex; margin:2% 4% 2% 2%; width: 90%;">
                         <img class="display-pp" src="{{ route('preview-image-profile', ['name' => $comment['profile_picture']]) }}" alt="">
-                        <div>
+                        <div style="width: 100%;">
                             @if ($currentUsername == $comment['username'])
                             <div class="justify-content-between" style="display: flex;">
                                 <p class="display-title display-content">by {{ $comment['username'] }}</p>
@@ -114,10 +114,19 @@
                         </div>
                     </div>
                     @empty
-                    <div class="display-story" style="display: inline-flex; margin:12px 20px 12px 10px">
+                    <div class="display-story" style="display: inline-flex; margin:12px 20px 12px 10px" id="no-comment">
                         <p class="display-title display-content">There are no comments to show</p>
                     </div>
                     @endforelse
+                    @if ($has_more)
+                    <center id="show-more-wrapper">
+                        <button type="button" class="btn btn-secondary btn-sm" style="width: 128px; background-color: #3A3B44; padding-left: 20px;" id="btn-show-more" onclick="getMoreComments();">
+                            Show More 
+                            <img src="{{ asset('assets/expand_more-white.svg') }}" alt="">
+                        </button>
+                        <p class="display-content" id="show-more-loading-text" style="display: none;">Getting comments...</p>
+                    </center>
+                    @endif
                 </div>
                 {{ Form::open(['route' => 'save-comment', 'id' => 'create-comment-form']) }}
                     {{ Form::hidden('chapter_id', $result['chapter']['chapter_id']) }}
@@ -145,9 +154,9 @@
     </div>
 </div>
 
-<div class="display-story" style="display: none; margin:12px 20px 12px 10px;" id="comment-template">
+<div class="display-story" style="display: none; margin:2% 4% 2% 2%; width: 90%;" id="comment-template">
     <img class="display-pp" id="comment-pp-template" src="{{ asset('assets/default.png') }}" alt="">
-    <div>
+    <div style="width: 100%;">
         <div class="justify-content-between" style="display: flex;">
             <p class="display-title display-content" id="comment-author-template"></p>
             <button style="width:fit-content; height:fit-content" onclick="toggleEdit($(this));">
@@ -169,12 +178,21 @@
         {{ Form::close() }}
     </div>
 </div>
+
+<div class="display-story" style="display: none; margin:2% 4% 2% 2%; width: 90%;" id="diff-comment-template">
+    <img class="display-pp" id="diff-comment-pp-template" src="{{ asset('assets/default.png') }}" alt="">
+    <div style="width: 100%;">
+        <p class="display-title display-content" id="diff-comment-author-template">by {{ $comment['username'] }}</p>
+        <p class="display-content text-break text-justify content-text" id="diff-comment-content-template">{{ $comment['content'] }}</p>
+    </div>
+</div>
 @endauth
 
 @endsection
 
 @section('script')
 <script>
+    var currentPage = 2;
     $(document).ready(function () {
 
     });
@@ -197,6 +215,7 @@
             success: function(data){
                 ShowCreateCommentMessage(true, 'Posting success. Your new comment will be shown on top of the list.');
                 $('#create-comment-textarea').val('');
+                $('#no-comment').remove();
                 prependNewComment(data.comment);
                 setTimeout(function () {
                     $('#create-comment-err-text').text('');
@@ -218,6 +237,12 @@
     }
 
     function prependNewComment(data) {
+        var template = fillSameCommentTemplate(data);
+        template.prependTo('.comment-box');
+        template.css('display', 'inline-flex');
+    }
+
+    function fillSameCommentTemplate(data) {
         var template = $('#comment-template').clone();
         var profilePic = template.find('#comment-pp-template');
         var author = template.find('#comment-author-template');
@@ -238,7 +263,36 @@
         commentId.removeAttr('id');
         textarea.removeAttr('id');
 
-        template.prependTo('.comment-box');
+        return template;
+    }
+
+    function fillDiffCommentTemplate(data) {
+        var template = $('#diff-comment-template').clone();
+        var profilePic = template.find('#diff-comment-pp-template');
+        var author = template.find('#diff-comment-author-template');
+        var content = template.find('#diff-comment-content-template');
+
+        profilePic.prop('src', data.photo_url);
+        author.text(data.username);
+        content.text(data.content);
+
+        template.removeAttr('id');
+        profilePic.removeAttr('id');
+        author.removeAttr('id');
+        content.removeAttr('id');
+
+        return template;
+    }
+
+    function appendNewComment(data, sameUsername) {
+        var template;
+        if (sameUsername){
+            template = fillSameCommentTemplate(data);
+        }
+        else {
+            template = fillDiffCommentTemplate(data);
+        }
+        template.appendTo('.comment-box');
         template.css('display', 'inline-flex');
     }
 
@@ -327,6 +381,38 @@
         form.find('.content-edit').removeClass('is-invalid');
         form.find('.content-edit').removeClass('is-valid');
         form.find('.edit-comment-err-text').text('');
+    }
+
+    function getMoreComments() {
+        $.ajax({
+            url: "{{ route('get-comment') }}",
+            type: "get",
+            data: { p : currentPage, c : '{{ $result['chapter']['chapter_id'] }}' },
+            cache: false,
+            beforeSend: function () {
+                $('#btn-show-more').hide();
+                $('#show-more-loading-text').show();
+            },
+            success: function (data) {
+                var result = data.result;
+                if (result.success){
+                    result.comments.forEach(cmt => {
+                        appendNewComment(cmt, "{{ Auth::id() }}" === cmt.username);
+                    });
+                    if (result.has_more){
+                        $('#btn-show-more').show();
+                        currentPage++;
+                    }
+                }
+            },
+            error: function (e) {
+                alert('An error has happened!');
+            },
+            complete: function () {
+                $('#show-more-wrapper').appendTo('.comment-box');
+                $('#show-more-loading-text').hide();
+            }
+        })
     }
 </script>
 @endsection

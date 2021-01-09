@@ -159,23 +159,38 @@ class ReaderService implements IReaderService
         ];
     }
 
-    public function GetCommentsByChapterID($chapter_id)
+    public function GetCommentsByChapterID($chapter_id, $page = 1, $take = -1)
     {
-        $comments = $this->commentRepository->FindAllByChapter($chapter_id);
+        $comments = null;
+        $allCommentsCount = 0;
+
+        if ($take == -1){
+            $comments = $this->commentRepository->FindAllByChapter($chapter_id);
+            $allCommentsCount = $comments->count();
+        }
+        else {
+            $comments = $this->commentRepository->FindAllByChapterOffsetByLimitBy($chapter_id, ($page - 1) * $take, $take);
+            $allCommentsCount = $this->commentRepository->FindAllCommentCountByChapter($chapter_id);
+        }
+
         $usernames = $comments->pluck('username');
         $users = $this->userRepository->FindAllByUsernames($usernames);
-        return $comments->map(function ($item, $key) use ($users)
-        {
-            $user = $users->firstWhere('username', $item->username);
-            return [
-                'comment_id' => $item->comment_id,
-                'username' => $user->username,
-                'author_name' => $user->name,
-                'profile_picture' => $user->profile_picture,
-                'chapter_id' => $item->chapter_id,
-                'content' => $item->content,
-            ];
-        });
+        return [
+            'comments' => $comments->map(function ($item, $key) use ($users)
+            {
+                $user = $users->firstWhere('username', $item->username);
+                return [
+                    'comment_id' => $item->comment_id,
+                    'username' => $user->username,
+                    'author_name' => $user->name,
+                    'profile_picture' => $user->profile_picture,
+                    'chapter_id' => $item->chapter_id,
+                    'content' => $item->content,
+                    'photo_url' => route('preview-image-profile', ['name' => $user->profile_picture])
+                ];
+            }),
+            'has_more' => ($page * $take < $allCommentsCount)
+        ];
     }
 
     public function GetCommentByID($comment_id)

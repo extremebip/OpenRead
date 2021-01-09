@@ -51,4 +51,5 @@ Route::get('/stories/{story_id?}', [ReaderController::class, 'index'])->name('re
 Route::get('/stories/cover/{name?}', [ReaderController::class, 'viewCover'])->name('view-story-cover');
 Route::post('/stories/{story_id?}/rate', [ReaderController::class, 'rate'])->name('rate-story');
 Route::get('/chapters/{chapter_id?}', [ReaderController::class, 'chapter'])->name('read-chapter');
+Route::get('/comment', [ReaderController::class, 'getComment'])->name('get-comment');
 Route::post('/comment', [ReaderController::class, 'postComment'])->name('save-comment');

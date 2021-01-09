@@ -12,6 +12,8 @@ class ReaderController extends Controller
 {
     private $readerService;
 
+    private $commentTakeLimit = 5;
+
     public function __construct(IReaderService $readerService) {
         $this->readerService = $readerService;
         $this->middleware(['auth', 'throttle:5,1'])->only('rate', 'postComment');
@@ -42,10 +44,12 @@ class ReaderController extends Controller
         if (is_null($result))
             abort(404);
 
-        $comments = $this->readerService->GetCommentsByChapterID($chapter_id);
+        $comments = $this->readerService->GetCommentsByChapterID($chapter_id, 1, $this->commentTakeLimit);
+        // dd($comments);
         return view('user.reader.chapter', [
             'result' => $result,
-            'comments' => $comments
+            'comments' => $comments['comments'],
+            'has_more' => $comments['has_more']
         ]);
     }
 
@@ -95,6 +99,37 @@ class ReaderController extends Controller
                 'result' => $result,
             ], 200);
         }
+    }
+
+    public function getComment(Request $request)
+    {
+        $result = ['success' => false];
+        try {
+            $page = $request->query('p');
+            $chapter_id = $request->query('c');
+            if (is_null($page))
+                throw new \Exception('No page given');
+
+            if (is_null($chapter_id))
+                throw new \Exception('No chapter given');
+
+            if (intval($page) == 0)
+                throw new \Exception('Invalid page input');
+            else {
+                $temp = $this->readerService->GetCommentsByChapterID($chapter_id, intval($page), $this->commentTakeLimit);
+                $result['comments'] = $temp['comments'];
+                $result['has_more'] = $temp['has_more'];
+            }
+
+            $result['success'] = true;
+            return response()->json(['result' => $result], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'result' => $result,
+                'message' => $e->getMessage()
+            ], 200);
+        }
+        
     }
 
     public function postComment(SaveCommentPostRequest $request)
