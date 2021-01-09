@@ -19,8 +19,8 @@ class StoryRepository extends BaseRepository implements IStoryRepository
 
     public function FindAllPaginate($search, $offset, $limit)
     {
-        return Story::where('story_title', 'like', $search)
-                    ->orWhere('username', 'like', $search)
+        return Story::where('story_title', 'like', "%$search%")
+                    ->orWhere('username', 'like', "%$search%")
                     ->offset($offset)
                     ->limit($limit)
                     ->get();
@@ -64,5 +64,12 @@ class StoryRepository extends BaseRepository implements IStoryRepository
                     ->offset(0)
                     ->limit($limit)
                     ->get();
+    }
+
+    public function FindAllStoryCountBySearch($search)
+    {
+        return Story::where('story_title', 'like', "%$search%")
+                    ->orWhere('username', 'like', "%$search%")
+                    ->count();
     }
 }

@@ -24,8 +24,8 @@ class UserRepository extends BaseRepository implements IUserRepository
 
     public function FindAllPaginate($search, $offset, $limit)
     {
-        return User::where('username', 'like', $search)
-                    ->orWhere('name', 'like', $search)
+        return User::where('username', 'like', "%$search%")
+                    ->orWhere('name', 'like', "%$search%")
                     ->offset($offset)
                     ->limit($limit)
                     ->get();

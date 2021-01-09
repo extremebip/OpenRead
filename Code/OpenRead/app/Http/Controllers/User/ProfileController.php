@@ -14,7 +14,7 @@ class ProfileController extends Controller
     private $userProfileService;
 
     public function __construct(IUserProfileService $userProfileService) {
-        $this->middleware('auth')->except(['index']);
+        $this->middleware('auth')->except(['index', 'preview']);
         $this->middleware('throttle:5,1')->only('upload');
         $this->userProfileService = $userProfileService;
     }

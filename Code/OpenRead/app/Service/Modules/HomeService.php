@@ -37,38 +37,52 @@ class HomeService implements IHomeService
         $aboveAverageResult = $this->storyRepository->FindAllWhereAboveViewsAverageOrderBy('views', 'desc');
         $aboveAverageResultCount = $aboveAverageResult->count();
         $belowAverageResult = $this->storyRepository->FindAllOffsetByLimitByOrderBy($aboveAverageResultCount, $getLimit - $aboveAverageResultCount, 'views', 'desc');
-        if ($aboveAverageResultCount > $getLimit)
+        
+        $story_ids = $aboveAverageResult->pluck('story_id')->merge($belowAverageResult->pluck('story_id'));
+        $story_ratings = $this->ratingRepository->FindAllByStories($story_ids);
+        if ($aboveAverageResultCount >= $getLimit)
         {
-            $story_ids = $aboveAverageResult->pluck('story_id');
-            $story_ratings = $this->ratingRepository->FindAllByStories($story_ids);
-            $groupRatingsByStory = $story_ratings->groupBy('story_id');
-            $mapStoryRatings = $groupRatingsByStory->mapWithKeys(function ($item, $key)
-            {
-                $temp = collect($item);
-                return [$key => $temp->avg('rate')];
-            })->sort();
-            return $aboveAverageResultCount->whereIn('story_id', $mapStoryRatings->take(4)->keys());
-        }
-        else if ($aboveAverageResultCount == $getLimit){
-            return $aboveAverageResult;
+            // $groupRatingsByStory = $story_ratings->groupBy('story_id');
+            // $mapStoryRatings = $groupRatingsByStory->mapWithKeys(function ($item, $key)
+            // {
+            //     $temp = collect($item);
+            //     return [$key => $temp->avg('rate')];
+            // })->sort();
+            $story_with_ratings = collect($this->MapStoryWithRating($aboveAverageResult, $story_ratings));
+            return $story_with_ratings->sortByDesc('rating')->take($getLimit);
+            // return $aboveAverageResultCount->whereIn('story_id', $mapStoryRatings->take(4)->keys());
         }
         else {
-            return $aboveAverageResult->merge($belowAverageResult);
+            $aboveAvgWithRatings = $this->MapStoryWithRating($aboveAverageResult, $story_ratings);
+            $belowAvgWithRatings = $this->MapStoryWithRating($belowAverageResult, $story_ratings);
+
+            $takenBelowAverage = $belowAvgWithRatings->sortByDesc('rating')->take($getLimit - $aboveAverageResultCount);
+            return collect($aboveAvgWithRatings)->merge($takenBelowAverage);
         }
     }
 
     public function Search($search, $page = 1)
     {
-        $takeLimit = 5;
+        $takeLimit = 2;
         $result = [
             'stories' => [],
+            'pagination' => null,
             'users' => []
         ];
-        $stories = $this->storyRepository->FindAllPaginate($search, $page * $takeLimit, $takeLimit);
+        $stories = $this->storyRepository->FindAllPaginate($search, ($page - 1) * $takeLimit, $takeLimit);
         if (!is_null($stories) && $stories->count() > 0){
             $story_ids = $stories->pluck('story_id');
             $ratings = $this->ratingRepository->FindAllByStories($story_ids);
             $result['stories'] = $this->MapStoryWithRating($stories, $ratings);
+
+            $storiesCount = $this->storyRepository->FindAllStoryCountBySearch($search);
+            $result['pagination'] = [
+                'currentPage' => $page,
+                'totalPage' => intval(ceil($storiesCount / $takeLimit)),
+                'startItem' => (($page - 1) * $takeLimit) + 1,
+                'endItem' => min($page * $takeLimit, $storiesCount),
+                'totalItem' => $storiesCount
+            ];
         }
         
         $result['users'] = $this->userRepository->FindAllPaginate($search, 0, $takeLimit)->toArray();
@@ -82,8 +96,9 @@ class HomeService implements IHomeService
             return null;
         
         $result = [
+            'genre' => $genre->toArray(),
             'recents' => [],
-            'most viewed' => []
+            'most_viewed' => []
         ];
         $genre_story = $this->storyGenreRepository->FindAllByGenre($genre_id);
         if ($genre_story->count() == 0)
@@ -101,7 +116,7 @@ class HomeService implements IHomeService
 
         $mostViewedStories = $this->storyRepository->FindAllByIDsLimitByOrderBy($story_ids, $recentLimit, 'views', 'desc');
         if ($mostViewedStories->count() > 0){
-            $result['most viewed'] = $this->MapStoryWithRating($mostViewedStories, $ratings);
+            $result['most_viewed'] = $this->MapStoryWithRating($mostViewedStories, $ratings);
         }
         return $result;
     }
@@ -110,7 +125,8 @@ class HomeService implements IHomeService
     {
         if ($stories->count() == 0)
             return [];
-        $stories->map(function ($story, $key) use ($ratings)
+
+        return $stories->map(function ($story, $key) use ($ratings)
         {
             $rating = 0;
             $selected_ratings = $ratings->where('story_id', $story->story_id);
@@ -122,8 +138,9 @@ class HomeService implements IHomeService
                 'title' => $story->story_title,
                 'author' => $story->username,
                 'views' => $story->views,
-                'synopsis' => $story->synopsis,
-                'rating' => $rating
+                'synopsis' => $story->sinopsis,
+                'cover' => $story->cover,
+                'rating' => $rating,
             ];
         });
     }

@@ -17,7 +17,7 @@ class HomeController extends Controller
     public function index()
     {
         $topPicks = $this->homeService->GetTopPicks();
-        return view('home', $topPicks->toArray());
+        return view('home', ['topPicks' => $topPicks]);
     }
 
     public function search(Request $request)
@@ -31,14 +31,16 @@ class HomeController extends Controller
         if (is_null($result))
             abort(404);
 
+        // dd($result);
         return view('search', $result);
     }
 
     private function ValidatePageParam($page)
     {
-        if (!is_int($page))
+        $temp = intval($page);
+        if ($temp == 0)
             return 1;
-        return $page;
+        return $temp;
     }
 
     public function genre($genre_id = null)

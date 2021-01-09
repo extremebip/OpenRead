@@ -10,4 +10,5 @@ interface IStoryRepository
     public function FindAllOffsetByLimitByOrderBy($offset, $limit, $order_by = null, $dir = 'asc');
     public function FindAllByIDsLimitByOrderBy($story_ids, $limit, $order_by = 'story_id', $dir = 'asc');
     public function FindAllByUserLimitByOrderBy($username, $limit, $order_by = 'story_id', $dir = 'asc');
+    public function FindAllStoryCountBySearch($search);
 }
