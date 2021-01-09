@@ -54,6 +54,7 @@ class UserProfileService implements IUserProfileService
                 if (isset($mapStoryRatings[$item->story_id]))
                     $rate = $mapStoryRatings[$item->story_id];
                 return [
+                    'story_id' => $item->story_id,
                     'title' => $item->story_title,
                     'rate' => $rate,
                     'views' => $item->views,

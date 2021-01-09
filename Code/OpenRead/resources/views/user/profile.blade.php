@@ -142,7 +142,7 @@
                         <div class="col-md-12" style="display: inline-flex;">
                             <img class="display-cover" src="{{ route('view-story-cover', ['name' => $story['cover'] ?? 'default']) }}" alt="">
                             <div>
-                                <p class="display-title display-content">{{ $story['title'] }}</p>
+                                <a href="{{ route('read-story', ['story_id' => $story['story_id']]) }}" class="display-title display-content text-white">{{ $story['title'] }}</a>
                                 <div>
                                     <img class="rate-view-icon display-content" src="assets/Star.svg.png" alt="">
                                     <p3 class="display-content">{{ sprintf("%.2f", $story['rate']) }}</p3>

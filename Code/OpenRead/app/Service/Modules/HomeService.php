@@ -63,7 +63,7 @@ class HomeService implements IHomeService
 
     public function Search($search, $page = 1)
     {
-        $takeLimit = 2;
+        $takeLimit = 5;
         $result = [
             'stories' => [],
             'pagination' => null,

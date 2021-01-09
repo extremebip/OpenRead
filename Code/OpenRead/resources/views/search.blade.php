@@ -79,7 +79,7 @@
                 <div class="box2" style="display: flex;">
                     <img class="display-cover" src="{{ route('view-story-cover', ['name' => $story['cover'] ?? 'default']) }}" alt="">
                     <div>
-                        <p class="display-title display-content">{{ $story['title'] }}</p>
+                        <a href="{{ route('read-story', ['story_id' => $story['story_id']]) }}" class="display-title display-content text-white">{{ $story['title'] }}</a>
                         <div class="display-content">
                             <span class="display-content">by {{ $story['author'] }}</span>
                             <img class="rate-view-icon display-content" src="{{ asset('assets/Star.svg.png') }}" alt="">
@@ -143,7 +143,7 @@
                     <div class="box2" style="display: flex;">
                         <img class="display-pp" src="{{ route('preview-image-profile', ['name' => $user['profile_picture']]) }}" alt="">
                         <div>
-                            <p style="font-size: 24px; margin: 5px 0px;">{{ $user['name'] }}</p>
+                            <a href="{{ route('show-profile', ['u' => $user['username']]) }}" class="text-white" style="font-size: 24px; margin: 5px 0px;">{{ $user['name'] }}</a>
                             <p style="font-size: 14px; margin: 5px 0px;">{{ $user['username'] }}</p>
                         </div>
                     </div>

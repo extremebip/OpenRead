@@ -33,7 +33,7 @@
                     <div class="col-md-6 col-xs-12 box2" style="display: flex;">
                         <img class="display-cover" src="{{ route('view-story-cover', ['name' => $story['cover'] ?? 'default']) }}" alt="">
                         <div>
-                            <p class="display-title display-content">{{ $story['title'] }}</p>
+                            <a class="display-title display-content text-white" href="{{ route('read-story', ['story_id' => $story['story_id']]) }}">{{ $story['title'] }}</a>
                             <div class="display-content">
                                 <span class="display-content">by {{ $story['author'] }}</span>
                                 <img class="rate-view-icon display-content" src="{{ asset('assets/Star.svg.png') }}" alt="">
