@@ -56,7 +56,7 @@ class HomeService implements IHomeService
             $aboveAvgWithRatings = $this->MapStoryWithRating($aboveAverageResult, $story_ratings);
             $belowAvgWithRatings = $this->MapStoryWithRating($belowAverageResult, $story_ratings);
 
-            $takenBelowAverage = $belowAvgWithRatings->sortByDesc('rating')->take($getLimit - $aboveAverageResultCount);
+            $takenBelowAverage = collect($belowAvgWithRatings)->sortByDesc('rating')->take($getLimit - $aboveAverageResultCount);
             return collect($aboveAvgWithRatings)->merge($takenBelowAverage);
         }
     }
