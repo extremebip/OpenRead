@@ -30,7 +30,6 @@ class ReaderController extends Controller
         if (is_null($result))
             abort(404);
 
-        request()->session()->flush();
         $this->checkAndSetStoryView($result['story']['story_id']);
         if (Auth::check()){
             $result['userRating'] = $this->readerService->GetRatingByStoryAndUser($story_id, Auth::id());
