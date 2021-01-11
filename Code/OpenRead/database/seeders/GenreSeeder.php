@@ -25,6 +25,7 @@ class GenreSeeder extends Seeder
             ['genre_id' => 'GR00008', 'genre_type' => 'History', 'description' => 'a'],
             ['genre_id' => 'GR00009', 'genre_type' => 'Non-Fiction', 'description' => 'a'],
             ['genre_id' => 'GR00010', 'genre_type' => 'Adventure', 'description' => 'a'],
+            ['genre_id' => 'GR00011', 'genre_type' => 'Comedy', 'description' => 'a'],
         ]);
     }
 }

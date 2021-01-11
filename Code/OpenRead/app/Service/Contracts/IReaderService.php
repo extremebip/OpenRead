@@ -12,4 +12,5 @@ interface IReaderService
     public function GetCommentByID($comment_id);
     public function SaveComment($data);
     public function CheckCoverExist($name);
+    public function UpdateStoryViews($story_id);
 }

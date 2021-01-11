@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\User;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cookie;
 use App\Service\Contracts\IReaderService;
 use App\Models\Requests\Reader\SaveCommentPostRequest;
 
@@ -28,6 +30,8 @@ class ReaderController extends Controller
         if (is_null($result))
             abort(404);
 
+        request()->session()->flush();
+        $this->checkAndSetStoryView($result['story']['story_id']);
         if (Auth::check()){
             $result['userRating'] = $this->readerService->GetRatingByStoryAndUser($story_id, Auth::id());
         }
@@ -44,8 +48,8 @@ class ReaderController extends Controller
         if (is_null($result))
             abort(404);
 
+        $this->checkAndSetStoryView($result['story']['story_id']);
         $comments = $this->readerService->GetCommentsByChapterID($chapter_id, 1, $this->commentTakeLimit);
-        // dd($comments);
         return view('user.reader.chapter', [
             'result' => $result,
             'comments' => $comments['comments'],
@@ -140,5 +144,65 @@ class ReaderController extends Controller
         return response()->json([
             'comment' => $comment
         ], 200);
+    }
+
+    private function checkAndSetStoryView($story_id)
+    {
+        $viewSession = $this->checkAndSetSessionView($story_id);
+        $viewCookie = $this->checkAndSetCookieView($story_id);
+        if (!$viewSession && !$viewCookie){
+            return $this->readerService->UpdateStoryViews($story_id);
+        }
+        else {
+            return null;
+        }
+    }
+
+    public function checkAndSetSessionView($story_id)
+    {
+        $sessionObj = request()->session();
+        if (!$sessionObj->has('StoryView')){
+            $sessionObj->push('StoryView', $story_id);
+            return false;
+        }
+        $storyViews = collect($sessionObj->get('StoryView'));
+        if (!$storyViews->contains($story_id)){
+            $sessionObj->push('StoryView', $story_id);
+            return false;
+        }
+        return true;
+    }
+
+    public function checkAndSetCookieView($story_id)
+    {
+        $daysWhenViewCounted = 5;
+        $viewExpireDate = Carbon::now('Asia/Jakarta')->addDays($daysWhenViewCounted);
+        $cookieExpireTime = ($daysWhenViewCounted + 1) * 24 * 60;
+        if (!request()->hasCookie('StoryView')){
+            Cookie::queue('StoryView', json_encode([$story_id => $viewExpireDate]), $cookieExpireTime);
+            return false;
+        }
+        $storyCookie = request()->cookie('StoryView');
+        $decodedJsonStoryView = json_decode($storyCookie, true);
+        if (is_null($decodedJsonStoryView)){
+            Cookie::queue('StoryView', json_encode([$story_id => $viewExpireDate]), $cookieExpireTime);
+            return false;
+        }
+
+        $storyViews = collect($decodedJsonStoryView);
+        $stringValue = $storyViews->get($story_id);
+        if (is_null($stringValue)){
+            $storyViews->put($story_id, $viewExpireDate);
+            Cookie::queue('StoryView', $storyViews->toJson(), $cookieExpireTime);
+            return false;
+        }
+
+        $timeValue = new Carbon($stringValue);
+        if (Carbon::now('Asia/Jakarta')->greaterThan($timeValue)){
+            $storyViews[$story_id] = $viewExpireDate;
+            Cookie::queue('StoryView', $storyViews->toJson(), $cookieExpireTime);
+            return false;
+        }
+        return true;
     }
 }

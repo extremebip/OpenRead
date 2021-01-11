@@ -73,9 +73,9 @@
             <br>
 
             {{ Form::label('gender', 'Gender') }} <br>
-            {{ Form::radio('gender', 'M', false, ['class form-control' => ($errors->has('gender') ? 'is-invalid': ''), 'id' => 'male']) }}
+            {{ Form::radio('gender', 'M', false, ['class' => ($errors->has('gender') ? 'is-invalid': ''), 'id' => 'male']) }}
             {{ Form::label('male', 'Male') }}
-            {{ Form::radio('gender', 'F', false, ['class form-control' => ($errors->has('gender') ? 'is-invalid': ''), 'id' => 'female']) }}
+            {{ Form::radio('gender', 'F', false, ['class' => ($errors->has('gender') ? 'is-invalid': ''), 'id' => 'female']) }}
             {{ Form::label('female', 'Female') }}
             @error('gender')
                 <span class="invalid-feedback" role="alert">

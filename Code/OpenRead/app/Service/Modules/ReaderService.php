@@ -239,4 +239,14 @@ class ReaderService implements IReaderService
         $result['ext'] = pathinfo($result['path'], PATHINFO_EXTENSION);
         return $result;
     }
+
+    public function UpdateStoryViews($story_id)
+    {
+        $story = $this->storyRepository->Find($story_id);
+        if (is_null($story))
+            return null;
+
+        $story->views = $story->views + 1;
+        return $this->storyRepository->InsertUpdate($story);
+    }
 }
