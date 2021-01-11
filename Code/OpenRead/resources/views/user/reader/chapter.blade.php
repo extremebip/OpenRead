@@ -87,13 +87,13 @@
                         <div style="width: 100%;">
                             @if ($currentUsername == $comment['username'])
                             <div class="justify-content-between" style="display: flex;">
-                                <p class="display-title display-content">by {{ $comment['username'] }}</p>
+                                <p class="display-title display-content">{{ $comment['username'] }}</p>
                                 <button style="width:fit-content; height:fit-content" onclick="toggleEdit($(this));">
                                     <img src="{{ asset('assets/edit_icon.png') }}" alt="" style="width: 16px; height: 16px;">
                                 </button>
                             </div>
                             @else
-                            <p class="display-title display-content">by {{ $comment['username'] }}</p>
+                            <p class="display-title display-content">{{ $comment['username'] }}</p>
                             @endif
                             
                             <p class="display-content text-break text-justify content-text">{{ $comment['content'] }}</p>
@@ -182,8 +182,8 @@
 <div class="display-story" style="display: none; margin:2% 4% 2% 2%; width: 90%;" id="diff-comment-template">
     <img class="display-pp" id="diff-comment-pp-template" src="{{ asset('assets/default.png') }}" alt="">
     <div style="width: 100%;">
-        <p class="display-title display-content" id="diff-comment-author-template">by {{ $comment['username'] }}</p>
-        <p class="display-content text-break text-justify content-text" id="diff-comment-content-template">{{ $comment['content'] }}</p>
+        <p class="display-title display-content" id="diff-comment-author-template"></p>
+        <p class="display-content text-break text-justify content-text" id="diff-comment-content-template"></p>
     </div>
 </div>
 @endauth

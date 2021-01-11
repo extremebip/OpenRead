@@ -50,7 +50,7 @@ class WriterService implements IWriterService
     {
         $stories = $this->storyRepository->FindAllByUser($username);
         if ($stories->count() == 0){
-            return [];
+            return collect();
         }
         $story_ids = $stories->pluck('story_id');
             $story_ratings = $this->ratingRepository->FindAllByStories($story_ids);

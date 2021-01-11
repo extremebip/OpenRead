@@ -37,7 +37,7 @@
     {{ Form::open(['route' => 'register']) }}
         <h2>
             {{ Form::label('name', 'Name') }}
-            {{ Form::text('name', @old('name'), ['class' => 'signup'.($errors->has('name') ? ' is-invalid': ''), 'autofocus']) }}
+            {{ Form::text('name', @old('name'), ['class' => 'signup form-control'.($errors->has('name') ? ' is-invalid': ''), 'autofocus']) }}
             @error('name')
                 <span class="invalid-feedback" role="alert">
                     <strong>{{ $message }}</strong>
@@ -46,7 +46,7 @@
             <br>
 
             {{ Form::label('username', 'Username') }}
-            {{ Form::text('username', @old('username'), ['class' => 'signup'.($errors->has('username') ? ' is-invalid': '')]) }}
+            {{ Form::text('username', @old('username'), ['class' => 'signup form-control'.($errors->has('username') ? ' is-invalid': '')]) }}
             @error('username')
                 <span class="invalid-feedback" role="alert">
                     <strong>{{ $message }}</strong>
@@ -55,7 +55,7 @@
             <br>
 
             {{ Form::label('email', 'Email') }}
-            {{ Form::email('email', @old('email'), ['class' => 'signup'.($errors->has('email') ? ' is-invalid': '')]) }}
+            {{ Form::email('email', @old('email'), ['class' => 'signup form-control'.($errors->has('email') ? ' is-invalid': '')]) }}
             @error('email')
                 <span class="invalid-feedback" role="alert">
                     <strong>{{ $message }}</strong>
@@ -64,7 +64,7 @@
             <br>
 
             {{ Form::label('dob', 'Date of Birth') }}
-            {{ Form::date('dob', @old('dob'), ['class' => 'signup'.($errors->has('dob') ? ' is-invalid': '')]) }}
+            {{ Form::date('dob', @old('dob'), ['class' => 'signup form-control'.($errors->has('dob') ? ' is-invalid': '')]) }}
             @error('dob')
                 <span class="invalid-feedback" role="alert">
                     <strong>{{ $message }}</strong>
@@ -73,9 +73,9 @@
             <br>
 
             {{ Form::label('gender', 'Gender') }} <br>
-            {{ Form::radio('gender', 'M', false, ['class' => ($errors->has('gender') ? 'is-invalid': ''), 'id' => 'male']) }}
+            {{ Form::radio('gender', 'M', false, ['class form-control' => ($errors->has('gender') ? 'is-invalid': ''), 'id' => 'male']) }}
             {{ Form::label('male', 'Male') }}
-            {{ Form::radio('gender', 'F', false, ['class' => ($errors->has('gender') ? 'is-invalid': ''), 'id' => 'female']) }}
+            {{ Form::radio('gender', 'F', false, ['class form-control' => ($errors->has('gender') ? 'is-invalid': ''), 'id' => 'female']) }}
             {{ Form::label('female', 'Female') }}
             @error('gender')
                 <span class="invalid-feedback" role="alert">
@@ -85,7 +85,7 @@
             <br> <br>
 
             {{ Form::label('password', 'Password') }}
-            {{ Form::password('password', ['class' => 'signup'.($errors->has('password') ? ' is-invalid': '')]) }}
+            {{ Form::password('password', ['class' => 'signup form-control'.($errors->has('password') ? ' is-invalid': '')]) }}
             @error('password')
                 <span class="invalid-feedback" role="alert">
                     <strong>{{ $message }}</strong>
