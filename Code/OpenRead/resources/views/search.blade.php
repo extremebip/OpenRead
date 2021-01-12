@@ -78,16 +78,16 @@
             @forelse ($stories as $story)
                 <div class="box2" style="display: flex;">
                     <img class="display-cover" src="{{ route('view-story-cover', ['name' => $story['cover'] ?? 'default']) }}" alt="">
-                    <div>
-                        <a href="{{ route('read-story', ['story_id' => $story['story_id']]) }}" class="display-title display-content text-white">{{ $story['title'] }}</a>
-                        <div class="display-content">
-                            <span class="display-content">by {{ $story['author'] }}</span>
+                    <div style="margin: 5px 15px;">
+                        <a href="{{ route('read-story', ['story_id' => $story['story_id']]) }}" class="display-title text-white">{{ $story['title'] }}</a>
+                        <div>
+                            <span>by {{ $story['author'] }}</span>
                             <img class="rate-view-icon display-content" src="{{ asset('assets/Star.svg.png') }}" alt="">
                             <span class="display-content">{{ sprintf("%.2f", $story['rating']) }}</span>
                             <img class="rate-view-icon display-content" src="{{ asset('assets/view.png') }}" alt="">
                             <span class="display-content">{{ $story['views'] }}</span>
                         </div>
-                        <span class="text-break">{{ $story['synopsis'] }}</span>
+                        <div class="text-justify">{{ $story['synopsis'] }}</div>
                     </div>
                 </div>
             @empty

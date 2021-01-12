@@ -141,15 +141,15 @@
                     <div class="row">
                         <div class="col-md-12" style="display: inline-flex;">
                             <img class="display-cover" src="{{ route('view-story-cover', ['name' => $story['cover'] ?? 'default']) }}" alt="">
-                            <div>
-                                <a href="{{ route('read-story', ['story_id' => $story['story_id']]) }}" class="display-title display-content text-white">{{ $story['title'] }}</a>
+                            <div style="margin: 5px 12px;">
+                                <a href="{{ route('read-story', ['story_id' => $story['story_id']]) }}" class="display-title text-white">{{ $story['title'] }}</a>
                                 <div>
-                                    <img class="rate-view-icon display-content" src="assets/Star.svg.png" alt="">
+                                    <img class="rate-view-icon" src="assets/Star.svg.png" alt="">
                                     <p3 class="display-content">{{ sprintf("%.2f", $story['rate']) }}</p3>
                                     <img class="rate-view-icon display-content" src="assets/view.png" alt="">
                                     <p3 class="display-content">{{ $story['views'] }}</p3>
                                 </div>
-                                <p4 class="text-break">{{ $story['synopsis'] }}</p4>
+                                <div class="text-justify">{{ $story['synopsis'] }}</div>
                             </div>
                         </div>
                     </div>

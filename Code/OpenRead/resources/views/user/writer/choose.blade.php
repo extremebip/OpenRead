@@ -19,14 +19,21 @@
 @section('style')
 <style>
     .button-to-edit{
-        background-color: #6D6E7D;
+        background-color: #3A3B44;
         color: white;
-        border-radius: 28px;
-        margin: 12px;
+        border-radius: 12px;
+        margin: 10px 5px;
+        text-align: left;
+        width: 100%;
+        padding: 15px;
     }
 
     table {
         table-layout: fixed;
+    }
+
+    .display-title {
+        margin-top: 0;
     }
 </style>
 @endsection
@@ -40,8 +47,8 @@
         <div class="row">
             @foreach ($storyChunk as $story)
             <div class="col container">
-                <button class="row button-to-edit" style="margin: 20px 10px;" onclick="redirect('{{ route($route, [$param => $story['story_id']]) }}');" style="width:95%;">
-                    <div class="col col-md-auto"> 
+                <button class="row button-to-edit" onclick="redirect('{{ route($route, [$param => $story['story_id']]) }}');">
+                    <div class="col col-sm-auto"> 
                         <img class="display-cover" src="{{ route('view-story-cover', ['name' => $story['cover'] ?? 'default']) }}" alt="">
                     </div>
                     <div class="col" style="min-width:220px">
@@ -52,7 +59,7 @@
                             <img class="rate-view-icon display-content" src="{{ asset('assets/view.png') }}" alt="">
                             <span class="display-content">{{ $story['views'] }}</span>
                         </div>
-                        <div class="justify-text">{{ $story['synopsis'] }}</div>
+                        <div class="text-justify">{{ $story['synopsis'] }}</div>
                     </div>
                 </button>
             </div>

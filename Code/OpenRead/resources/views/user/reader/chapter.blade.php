@@ -59,7 +59,7 @@
         </p>
     </div>
     <div class="row">
-        <p class="text-white box2 text-justify" style="font-size: 20px; line-height: 2;">
+        <p class="text-white box2 text-justify" style="font-size: 20px; line-height: 2; width: 100%;">
             {{ $result['chapter']['content'] }}
         </p>
     </div>
@@ -189,6 +189,8 @@
 @endauth
 
 @endsection
+
+@auth
 
 @section('script')
 <script>
@@ -416,3 +418,5 @@
     }
 </script>
 @endsection
+
+@endauth

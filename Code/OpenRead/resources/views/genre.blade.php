@@ -11,7 +11,7 @@
             @forelse ($recents as $story)
                 <div style="display: flex;">
                     <img class="display-cover" src="{{ route('view-story-cover', ['name' => $story['cover'] ?? 'default']) }}" alt="">
-                    <div>
+                    <div style="margin: 5px 12px;">
                         <a class="display-title display-content text-white" href="{{ route('read-story', ['story_id' => $story['story_id']]) }}">{{ $story['title'] }}</a>
                         <div>
                             <span class="display-content">by {{ $story['author'] }}</span>
@@ -20,7 +20,7 @@
                             <img class="rate-view-icon display-content" src="{{ asset('assets/view.png') }}" alt="">
                             <span class="display-content">{{ $story['views'] }}</span>
                         </div>
-                        <span class="display-content text-break">{{ $story['synopsis'] }}</span>
+                        <div class="display-content text-justify">{{ $story['synopsis'] }}</div>
                     </div>
                 </div>
             @empty
@@ -37,7 +37,7 @@
             @forelse ($most_viewed as $story)
                 <div style="display: flex;">
                     <img class="display-cover" src="{{ route('view-story-cover', ['name' => $story['cover'] ?? 'default']) }}" alt="">
-                    <div>
+                    <div style="margin: 5px 12px;">
                         <a class="display-title display-content text-white" href="{{ route('read-story', ['story_id' => $story['story_id']]) }}">{{ $story['title'] }}</a>
                         <div>
                             <span class="display-content">by {{ $story['author'] }}</span>
@@ -46,7 +46,7 @@
                             <img class="rate-view-icon display-content" src="{{ asset('assets/view.png') }}" alt="">
                             <span class="display-content">{{ $story['views'] }}</span>
                         </div>
-                        <span class="display-content text-break">{{ $story['synopsis'] }}</span>
+                        <div class="display-content text-justify">{{ $story['synopsis'] }}</div>
                     </div>
                 </div>
             @empty
