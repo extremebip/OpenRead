@@ -30,18 +30,22 @@
         @forelse ($topPicks->chunk(2) as $storyChunk)
             <div class="row">
                 @foreach ($storyChunk as $story)
-                    <div class="col-md-6 col-xs-12 box2" style="display: flex;">
-                        <img class="display-cover" src="{{ route('view-story-cover', ['name' => $story['cover'] ?? 'default']) }}" alt="">
-                        <div>
-                            <a class="display-title display-content text-white" href="{{ route('read-story', ['story_id' => $story['story_id']]) }}">{{ $story['title'] }}</a>
-                            <div class="display-content">
-                                <span class="display-content">by {{ $story['author'] }}</span>
-                                <img class="rate-view-icon display-content" src="{{ asset('assets/Star.svg.png') }}" alt="">
-                                <span class="display-content">{{ sprintf("%.2f", $story['rating']) }}</span>
-                                <img class="rate-view-icon display-content" src="{{ asset('assets/view.png') }}" alt="">
-                                <span class="display-content">{{ $story['views'] }}</span>
+                    <div class="col box2 container" style="display: inline-flex;">
+                        <div class="row">
+                            <div class="col col-md-auto">
+                                <img class="display-cover" src="{{ route('view-story-cover', ['name' => $story['cover'] ?? 'default']) }}" alt="">
                             </div>
-                            <span class="text-break text">{{ $story['synopsis'] }}</span>
+                            <div class="col" style="min-width:220px">
+                                <a class="display-title text-white" href="{{ route('read-story', ['story_id' => $story['story_id']]) }}">{{ $story['title'] }}</a>
+                                <div>
+                                    <span>by {{ $story['author'] }}</span>
+                                    <img class="rate-view-icon display-content" src="{{ asset('assets/Star.svg.png') }}" alt="">
+                                    <span class="display-content">{{ sprintf("%.2f", $story['rating']) }}</span>
+                                    <img class="rate-view-icon display-content" src="{{ asset('assets/view.png') }}" alt="">
+                                    <span class="display-content">{{ $story['views'] }}</span>
+                                </div>
+                                <div class="text-justify" >{{ $story['synopsis'] }}</div>
+                            </div>
                         </div>
                     </div>
                 @endforeach
