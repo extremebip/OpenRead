@@ -36,21 +36,15 @@ class HomeService implements IHomeService
         $getLimit = 4;
         $aboveAverageResult = $this->storyRepository->FindAllWhereAboveViewsAverageOrderBy('views', 'desc');
         $aboveAverageResultCount = $aboveAverageResult->count();
-        $belowAverageResult = $this->storyRepository->FindAllOffsetByLimitByOrderBy($aboveAverageResultCount, $getLimit - $aboveAverageResultCount, 'views', 'desc');
+        $remainingLimit = $getLimit - $aboveAverageResultCount;
+        $belowAverageResult = $this->storyRepository->FindAllOffsetByLimitByOrderBy($aboveAverageResultCount,($remainingLimit < 0) ? 0 : $remainingLimit, 'views', 'desc');
         
         $story_ids = $aboveAverageResult->pluck('story_id')->merge($belowAverageResult->pluck('story_id'));
         $story_ratings = $this->ratingRepository->FindAllByStories($story_ids);
         if ($aboveAverageResultCount >= $getLimit)
         {
-            // $groupRatingsByStory = $story_ratings->groupBy('story_id');
-            // $mapStoryRatings = $groupRatingsByStory->mapWithKeys(function ($item, $key)
-            // {
-            //     $temp = collect($item);
-            //     return [$key => $temp->avg('rate')];
-            // })->sort();
             $story_with_ratings = collect($this->MapStoryWithRating($aboveAverageResult, $story_ratings));
             return $story_with_ratings->sortByDesc('rating')->take($getLimit);
-            // return $aboveAverageResultCount->whereIn('story_id', $mapStoryRatings->take(4)->keys());
         }
         else {
             $aboveAvgWithRatings = $this->MapStoryWithRating($aboveAverageResult, $story_ratings);
