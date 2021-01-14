@@ -20,14 +20,15 @@ Folder static_view_frontend berisi file html, css, dan assets untuk frontend web
 File - file ini yang akan di integrasikan ke dalam views Laravel.
 
 Folder Documents berisi dokumen - dokumen yang dibutuhkan saat melakukan development aplikasi OpenRead. Dokumen - dokumen tersebut beserta deskripsinya:
-|       Document Name      	|                                              Description                                             	|
-|:------------------------:	|:----------------------------------------------------------------------------------------------------:	|
-| ERD OpenRead.png         	| Entity Relationship Diagram that shows all the entity and its attributes needed for the application. 	|
-| Manual Book OpenRead.pdf 	| Instruction manual to guide first time user using the application.                                   	|
-| OpenRead Timeline.xlsx   	| Timeline of the project, including cost and resources needed for the project.                        	|
-| Risk Management.pdf      	| Document to show case the application’s potential risk and plan to prevent them from happening.      	|
-| SRS OpenRead.docx        	| Document that shows description and requirements for the application.                                	|
-| Test Plan OpenRead.pdf   	| Document that shows test plan to test the application is working as intended.                        	|
+|       Document Name      	|                                              Description                                             	                |
+|:------------------------:	|:--------------------------------------------------------------------------------------------------------------------:	|
+| ERD OpenRead.png         	| Entity Relationship Diagram that shows all the entity and its attributes needed for the application. 	                |
+| Manual Book OpenRead.pdf 	| Instruction manual to guide first time user using the application.                                   	                |
+| OpenRead Timeline.xlsx   	| Timeline of the project, including cost and resources needed for the project.                        	                |
+| Risk Management.pdf      	| Document to show case the application’s potential risk and plan to prevent them from happening.      	                |
+| SDLC OpenRead.pdf         | Document that shows Software Development Lifecycle for our project that acts as our guideline to develop our project. |
+| SRS OpenRead.docx        	| Document that shows description and requirements for the application.                                	                |
+| Test Plan OpenRead.pdf   	| Document that shows test plan to test the application is working as intended.                        	                |
 
 Folder UI Design OpenRead berisi design halaman frontend aplikasi OpenRead.
 
